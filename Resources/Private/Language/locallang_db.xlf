@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-09-17T16:19:35Z" product-name="famelo_location">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_famelolocation_domain_model_location">
+				<source>Location</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.street">
+				<source>Street</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.zip">
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.city">
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.phone">
+				<source>Phone</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.fax">
+				<source>Fax</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.url">
+				<source>Url</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.latitude">
+				<source>Latitude</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.longitude">
+				<source>Longitude</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

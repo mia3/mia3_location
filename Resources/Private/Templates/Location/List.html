@@ -1,0 +1,68 @@
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<div id="map-canvas" style="height:300px; width: 100%; margin-bottom: 20px;"></div>
+
+<f:form action="list">
+	<f:form.textfield name="address" value="{address}"/>
+	<f:form.select name="radius" options="{5: '5', 10: '10', 20: '20', 30: '30'}" value="{radius}" />
+</f:form>
+
+<div class="results">
+	<f:for each="{locations}" as="location">
+		<div class="location">
+			<h3 class="title">{location.name}</h3>
+			{location.description}
+			{location.street}
+			{location.zip}
+			{location.city}
+			{location.phone}
+			{location.fax}
+			{location.url}
+			{location.email}
+			<span class="latitude">{location.latitude}</span>
+			<span class="longitude">{location.longitude}</span>
+			<!-- <f:link.action action="show" arguments="{location : location}"></f:link.action> -->
+			<div class="popup" style="display: none;">
+				<h3 class="title">{location.name}</h3>
+				{location.description}
+				{location.street}
+				{location.zip}
+				{location.city}
+			</div>
+		</div>
+	</f:for>
+</div>
+
+<script>
+	function initialize() {
+		var map;
+		var defaultZoom = {settings.defaultZoom};
+		var defaultLatitude = {settings.defaultLatitude};
+		var defaultLongitude = {settings.defaultLongitude};
+		var mapOptions = {
+			zoom: defaultZoom,
+			center: new google.maps.LatLng(defaultLatitude, defaultLongitude),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		$('.results .location').each(function(){
+			var location = $(this);
+			var latitude = location.find('.latitude').text();
+			var longitude = location.find('.longitude').text();
+
+			var marker = new google.maps.Marker({
+				position: new google.maps.LatLng(latitude, longitude),
+				map: map,
+				title: location.find('.title').text()
+			});
+
+			var infowindow = new google.maps.InfoWindow({
+				content: location.find('.popup').html()
+			});
+			 google.maps.event.addListener(marker, 'click', function() {
+				infowindow.open(map, marker);
+			});
+		});
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>
