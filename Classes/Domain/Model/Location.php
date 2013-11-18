@@ -5,7 +5,7 @@ namespace Famelo\FameloLocation\Domain\Model;
  *  Copyright notice
  *
  *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Famelo OHG
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,6 +39,13 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var \string
 	 */
 	protected $name;
+
+	/**
+	 * description
+	 *
+	 * @var \string
+	 */
+	protected $additional;
 
 	/**
 	 * description
@@ -127,6 +134,20 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setName($name) {
 		$this->name = $name;
+	}
+
+	/**
+	 * @param string $additional
+	 */
+	public function setAdditional($additional) {
+		$this->additional = $additional;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAdditional() {
+		return $this->additional;
 	}
 
 	/**

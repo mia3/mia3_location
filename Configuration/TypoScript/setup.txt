@@ -15,7 +15,10 @@ plugin.tx_famelolocation {
 		listPid =
 		detailPid =
 		defaultRadius = 20
+		defaultZoom = 8
 		defaultCountry = Deutschland
+		defaultMapLatitude = 51.9518727
+		defaultMapLongitude = 8.400445
 	}
 }
 

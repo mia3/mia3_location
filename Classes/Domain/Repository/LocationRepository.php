@@ -31,16 +31,7 @@ namespace Famelo\FameloLocation\Domain\Repository;
  *
  */
 class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-	public function findNearBy($address, $distance=30) {
-		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
-		$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
-		$adr = json_decode($addressData);
-		$coordinates = $adr->results[0]->geometry->location;
-		if ($coordinates === NULL) {
-			return array();
-		}
-		$latitude = $coordinates->lat;
-		$longitude = $coordinates->lng;
+	public function findNearBy($latitude, $longitude, $distance=30) {
         $pi = M_PI;
         $query = 'SELECT *, (
         	((acos(

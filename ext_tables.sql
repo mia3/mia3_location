@@ -7,6 +7,7 @@ CREATE TABLE tx_famelolocation_domain_model_location (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	additional varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	street varchar(255) DEFAULT '' NOT NULL,
 	zip varchar(255) DEFAULT '' NOT NULL,

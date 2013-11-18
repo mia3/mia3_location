@@ -10,6 +10,9 @@
 			<trans-unit id="tx_famelolocation_domain_model_location.name">
 				<source>Name</source>
 			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.additional">
+				<source>Additional</source>
+			</trans-unit>
 			<trans-unit id="tx_famelolocation_domain_model_location.description">
 				<source>Description</source>
 			</trans-unit>

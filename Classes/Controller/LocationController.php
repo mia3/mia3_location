@@ -57,16 +57,100 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$radius = $this->settings['defaultRadius'];
 		}
 		$this->view->assign('address', $address);
+		$locations = array();
+		$this->view->assign('mapLatitude', $this->settings['defaultMapLatitude']);
+		$this->view->assign('mapLongitude', $this->settings['defaultMapLongitude']);
 		if ($address === NULL) {
-			$locations = $this->locationRepository->findAll();
+			// $locations = $this->locationRepository->findAll();
+		} elseif (preg_match('/^[0-9]*$/', $address) && strlen($address) < 5) {
+			$this->flashMessageContainer->add('Bitte geben sie eine Vollständige Postleitzahl ein', NULL, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 		} else {
 			if (!empty($this->settings['defaultCountry'])) {
 				 $address .= ',Deutschland';
 			}
-			$locations = $this->locationRepository->findNearBy($address, $radius);
+			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
+			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
+			$adr = json_decode($addressData);
+			$coordinates = $adr->results[0]->geometry->location;
+			if ($coordinates !== NULL) {
+				$latitude = $coordinates->lat;
+				$longitude = $coordinates->lng;
+
+				$locations = $this->locationRepository->findNearBy($latitude, $longitude, $radius);
+				$this->view->assign('mapLatitude', $latitude);
+				$this->view->assign('mapLongitude', $longitude);
+			}
 		}
 		$this->view->assign('locations', $locations);
 		$this->view->assign('radius', $radius);
+
+		// $this->importAction(PATH_typo3 . '../fileadmin/Adressen.csv');
+	}
+
+	// public function importAction($filename) {
+	// 	$contents = file_get_contents($filename);
+	// 	$rows = explode("\r", $contents);
+
+	// 	// foreach ($this->locationRepository->findAll() as $location) {
+	// 	// 	$this->locationRepository->remove($location);
+	// 	// }
+
+	// 	$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+ //   			'tx_famelolocation_domain_model_location',
+ //   			'pid=46'
+ // 		);
+
+	// 	for ($i=1; $i < count($rows); $i++) {
+	// 		$row = $rows[$i];
+	// 		$row = str_getcsv($row, ';');
+	// 		$location = new \Famelo\FameloLocation\Domain\Model\Location();
+	// 		$location->setPid(46);
+	// 		$location->setName($row[0]);
+	// 		$location->setAdditional($row[1]);
+	// 		$location->setStreet($row[2]);
+	// 		$location->setZip($row[3]);
+	// 		$location->setCity($row[4]);
+	// 		$location->setPhone($row[5]);
+	// 		$location->setUrl($row[6]);
+
+	// 		$address = implode(',', array(
+	// 			$location->getStreet(),
+	// 			$location->getZip(),
+	// 			$location->getCity(),
+	// 			'Deutschland'
+	// 		));
+	// 		$coordinates = $this->getCoordinates($address);
+	// 		if ($coordinates !== NULL) {
+	// 			if (!empty($fieldArray['latitude']) && $fieldArray['latitude'] !== $row['latitude']) {
+
+	// 			} else {
+	// 				$location->setLatitude($coordinates->lat);
+	// 			}
+	// 			if (!empty($fieldArray['longitude']) && $fieldArray['longitude'] !== $row['longitude']) {
+
+	// 			} else {
+	// 				$location->setLongitude($coordinates->lng);
+	// 			}
+	// 		}
+	// 		$this->locationRepository->add($location);
+	// 	}
+	// }
+
+	public function getCoordinates($address) {
+		$tmpDir = PATH_site . 'typo3temp/coordinates/';
+		if (!is_dir($tmpDir)) {
+			mkdir($tmpDir);
+		}
+		$tmpName = $tmpDir . sha1($address) . '.txt';
+		if (!file_exists($tmpName)) {
+			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
+			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
+			file_put_contents($tmpName, $addressData);
+		} else {
+			$addressData = file_get_contents($tmpName);
+		}
+		$adr = json_decode($addressData);
+		return $adr->results[0]->geometry->location;
 	}
 
 	/**

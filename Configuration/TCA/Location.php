@@ -6,16 +6,16 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_famelolocation_domain_model_location'] = array(
 	'ctrl' => $TCA['tx_famelolocation_domain_model_location']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, description, street, zip, city, phone, fax, url, email, latitude, longitude',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, additional, description, street, zip, city, phone, fax, url, email, latitude, longitude',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, description, street, zip, city, phone, fax, url, email, latitude, longitude,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, additional, description, street, zip, city, phone, fax, url, email, latitude, longitude,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
 	),
 	'columns' => array(
-	
+
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
@@ -56,7 +56,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 				'max' => 255,
 			)
 		),
-	
+
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
@@ -99,6 +99,15 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		'name' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.name',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'additional' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.additional',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
