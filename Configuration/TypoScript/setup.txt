@@ -7,10 +7,6 @@ plugin.tx_famelolocation {
 	persistence {
 		storagePid = {$plugin.tx_famelolocation.persistence.storagePid}
 	}
-	features {
-		# uncomment the following line to enable the new Property Mapper.
-		# rewrittenPropertyMapper = 1
-	}
 	settings {
 		listPid =
 		detailPid =
@@ -19,6 +15,7 @@ plugin.tx_famelolocation {
 		defaultCountry = Deutschland
 		defaultMapLatitude = 51.9518727
 		defaultMapLongitude = 8.400445
+		showAll = 0
 	}
 }
 

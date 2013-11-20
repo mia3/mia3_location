@@ -55,6 +55,13 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $description;
 
 	/**
+	 * description
+	 *
+	 * @var \string
+	 */
+	protected $contact;
+
+	/**
 	 * street
 	 *
 	 * @var \string
@@ -95,6 +102,13 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var \string
 	 */
 	protected $url;
+
+	/**
+	 * country
+	 *
+	 * @var \string
+	 */
+	protected $country;
 
 	/**
 	 * email
@@ -170,6 +184,25 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
+	 * Returns the contact
+	 *
+	 * @return \string $contact
+	 */
+	public function getContact() {
+		return $this->contact;
+	}
+
+	/**
+	 * Sets the contact
+	 *
+	 * @param \string $contact
+	 * @return void
+	 */
+	public function setContact($contact) {
+		$this->contact = $contact;
+	}
+
+	/**
 	 * Returns the street
 	 *
 	 * @return \string $street
@@ -224,6 +257,25 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setCity($city) {
 		$this->city = $city;
+	}
+
+	/**
+	 * Returns the country
+	 *
+	 * @return \string $country
+	 */
+	public function getCountry() {
+		return $this->country;
+	}
+
+	/**
+	 * Sets the country
+	 *
+	 * @param \string $country
+	 * @return void
+	 */
+	public function setCountry($country) {
+		$this->country = $country;
 	}
 
 	/**

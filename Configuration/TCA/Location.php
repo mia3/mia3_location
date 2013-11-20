@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_famelolocation_domain_model_location'] = array(
 	'ctrl' => $TCA['tx_famelolocation_domain_model_location']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, additional, description, street, zip, city, phone, fax, url, email, latitude, longitude',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, latitude, longitude',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, additional, description, street, zip, city, phone, fax, url, email, latitude, longitude,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, latitude, longitude,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -135,6 +135,15 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 			),
 			'defaultExtras' => 'richtext:rte_transform[flag=rte_enabled|mode=ts]',
 		),
+		'contact' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.contact',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
 		'street' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.street',
@@ -156,6 +165,15 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		'city' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.city',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'country' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.country',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,

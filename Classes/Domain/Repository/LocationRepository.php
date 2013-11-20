@@ -50,12 +50,10 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
         $result = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        $uids = array();
+        $locations = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			$uids[] = $row['uid'];
+			$locations[] = $this->findByUid($row['uid']);
 		}
-		$query = $this->createQuery();
-		$query->matching($query->in('uid', $uids));
-		return $query->execute();
+		return $locations;
 	}
 }

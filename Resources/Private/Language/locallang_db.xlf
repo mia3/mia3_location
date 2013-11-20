@@ -16,6 +16,9 @@
 			<trans-unit id="tx_famelolocation_domain_model_location.description">
 				<source>Description</source>
 			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.contact">
+				<source>Contact Person</source>
+			</trans-unit>
 			<trans-unit id="tx_famelolocation_domain_model_location.street">
 				<source>Street</source>
 			</trans-unit>
@@ -24,6 +27,9 @@
 			</trans-unit>
 			<trans-unit id="tx_famelolocation_domain_model_location.city">
 				<source>City</source>
+			</trans-unit>
+			<trans-unit id="tx_famelolocation_domain_model_location.country">
+				<source>Country</source>
 			</trans-unit>
 			<trans-unit id="tx_famelolocation_domain_model_location.phone">
 				<source>Phone</source>
