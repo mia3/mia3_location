@@ -1,5 +1,5 @@
 <?php
-namespace Famelo\FameloLocation\Domain\Repository;
+namespace Mia3\Mia3Location\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice

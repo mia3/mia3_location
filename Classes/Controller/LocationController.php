@@ -1,5 +1,5 @@
 <?php
-namespace Famelo\FameloLocation\Controller;
+namespace Mia3\Mia3Location\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -34,7 +34,7 @@ namespace Famelo\FameloLocation\Controller;
 class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * @var \Famelo\FameloLocation\Domain\Repository\LocationRepository
+	 * @var \Mia3\Mia3Location\Domain\Repository\LocationRepository
 	 */
 	protected $locationRepository;
 
@@ -44,9 +44,9 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $countryRepository;
 
 	/**
-	 * @param \Famelo\FameloLocation\Domain\Repository\LocationRepository $locationRepository
+	 * @param \Mia3\Mia3Location\Domain\Repository\LocationRepository $locationRepository
 	 */
-	public function injectLocationRepository(\Famelo\FameloLocation\Domain\Repository\LocationRepository $locationRepository) {
+	public function injectLocationRepository(\Mia3\Mia3Location\Domain\Repository\LocationRepository $locationRepository) {
 		$this->locationRepository = $locationRepository;
 	}
 
@@ -122,7 +122,7 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		for ($i=1; $i < count($rows); $i++) {
 			$row = $rows[$i];
 			$row = str_getcsv($row, ';');
-			$location = new \Famelo\FameloLocation\Domain\Model\Location();
+			$location = new \Mia3\Mia3Location\Domain\Model\Location();
 			$location->setPid(79);
 			$location->setName($row[0]);
 			$location->setContact($row[3]);
@@ -177,10 +177,10 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	/**
 	 * action show
 	 *
-	 * @param \Famelo\FameloLocation\Domain\Model\Location $location
+	 * @param \Mia3\Mia3Location\Domain\Model\Location $location
 	 * @return void
 	 */
-	public function showAction(\Famelo\FameloLocation\Domain\Model\Location $location) {
+	public function showAction(\Mia3\Mia3Location\Domain\Model\Location $location) {
 		$this->view->assign('location', $location);
 	}
 

@@ -15,13 +15,14 @@ if (!defined('TYPO3_MODE')) {
 	'Location Search'
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Famelo Locations');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'MIA3 Locations');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_famelolocation_domain_model_location', 'EXT:famelo_location/Resources/Private/Language/locallang_csh_tx_famelolocation_domain_model_location.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_famelolocation_domain_model_location');
-$TCA['tx_famelolocation_domain_model_location'] = array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_mia3location_domain_model_location', 'EXT:mia3_location/Resources/Private/Language/locallang_csh_tx_mia3location_domain_model_location.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_mia3location_domain_model_location');
+
+$TCA['tx_mia3location_domain_model_location'] = array(
 	'ctrl' => array(
-		'title'	=> 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location',
+		'title'	=> 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location',
 		'label' => 'name',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
@@ -44,8 +45,6 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'searchFields' => 'name,description,street,zip,city,phone,fax,url,email,latitude,longitude,',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Location.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_famelolocation_domain_model_location.gif'
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_mia3location_domain_model_location.gif'
 	),
 );
-
-?>

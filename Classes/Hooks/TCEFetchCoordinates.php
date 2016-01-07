@@ -1,5 +1,5 @@
 <?php
-namespace Famelo\FameloLocation\Hooks;
+namespace Mia3\Mia3Location\Hooks;
 
 class TCEFetchCoordinates {
 	function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference) {

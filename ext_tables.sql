@@ -1,7 +1,7 @@
 #
-# Table structure for table 'tx_famelolocation_domain_model_location'
+# Table structure for table 'tx_mia3location_domain_model_location'
 #
-CREATE TABLE tx_famelolocation_domain_model_location (
+CREATE TABLE tx_mia3location_domain_model_location (
 
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -47,6 +47,6 @@ CREATE TABLE tx_famelolocation_domain_model_location (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
- KEY language (l10n_parent,sys_language_uid)
+	KEY language (l10n_parent,sys_language_uid)
 
 );

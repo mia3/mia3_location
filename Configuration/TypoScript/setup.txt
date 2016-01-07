@@ -1,11 +1,11 @@
-plugin.tx_famelolocation {
+plugin.tx_mia3location {
 	view {
-		templateRootPath = {$plugin.tx_famelolocation.view.templateRootPath}
-		partialRootPath = {$plugin.tx_famelolocation.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_famelolocation.view.layoutRootPath}
+		templateRootPath = {$plugin.tx_mia3location.view.templateRootPath}
+		partialRootPath = {$plugin.tx_mia3location.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_mia3location.view.layoutRootPath}
 	}
 	persistence {
-		storagePid = {$plugin.tx_famelolocation.persistence.storagePid}
+		storagePid = {$plugin.tx_mia3location.persistence.storagePid}
 	}
 	settings {
 		listPid =
@@ -18,28 +18,3 @@ plugin.tx_famelolocation {
 		showAll = 0
 	}
 }
-
-plugin.tx_famelolocation._CSS_DEFAULT_STYLE (
-	textarea.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
-
-	input.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
-
-	.tx-famelo-location table {
-		border-collapse:separate;
-		border-spacing:10px;
-	}
-
-	.tx-famelo-location table th {
-		font-weight:bold;
-	}
-
-	.tx-famelo-location table td {
-		vertical-align:top;
-	}
-)

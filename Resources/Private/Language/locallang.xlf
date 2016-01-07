@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2013-09-17T16:19:35Z" product-name="famelo_location">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-09-17T16:19:35Z" product-name="mia3_location">
 		<header/>
 		<body>
 
-			<trans-unit id="tx_famelolocation_domain_model_location">
+			<trans-unit id="tx_mia3location_domain_model_location">
 				<source>Location</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.name">
+			<trans-unit id="tx_mia3location_domain_model_location.name">
 				<source>name</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.description">
+			<trans-unit id="tx_mia3location_domain_model_location.description">
 				<source>description</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.street">
+			<trans-unit id="tx_mia3location_domain_model_location.street">
 				<source>street</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.zip">
+			<trans-unit id="tx_mia3location_domain_model_location.zip">
 				<source>zip</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.city">
+			<trans-unit id="tx_mia3location_domain_model_location.city">
 				<source>city</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.phone">
+			<trans-unit id="tx_mia3location_domain_model_location.phone">
 				<source>phone</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.fax">
+			<trans-unit id="tx_mia3location_domain_model_location.fax">
 				<source>fax</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.url">
+			<trans-unit id="tx_mia3location_domain_model_location.url">
 				<source>url</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.email">
+			<trans-unit id="tx_mia3location_domain_model_location.email">
 				<source>email</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.latitude">
+			<trans-unit id="tx_mia3location_domain_model_location.latitude">
 				<source>latitude</source>
 			</trans-unit>
-			<trans-unit id="tx_famelolocation_domain_model_location.longitude">
+			<trans-unit id="tx_mia3location_domain_model_location.longitude">
 				<source>longitude</source>
 			</trans-unit>
-			
+
 		</body>
 	</file>
 </xliff>

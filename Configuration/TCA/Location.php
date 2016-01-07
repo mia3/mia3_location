@@ -3,8 +3,8 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$TCA['tx_famelolocation_domain_model_location'] = array(
-	'ctrl' => $TCA['tx_famelolocation_domain_model_location']['ctrl'],
+$TCA['tx_mia3location_domain_model_location'] = array(
+	'ctrl' => $TCA['tx_mia3location_domain_model_location']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, latitude, longitude',
 	),
@@ -38,8 +38,8 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 				'items' => array(
 					array('', 0),
 				),
-				'foreign_table' => 'tx_famelolocation_domain_model_location',
-				'foreign_table_where' => 'AND tx_famelolocation_domain_model_location.pid=###CURRENT_PID### AND tx_famelolocation_domain_model_location.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_mia3location_domain_model_location',
+				'foreign_table_where' => 'AND tx_mia3location_domain_model_location.pid=###CURRENT_PID### AND tx_mia3location_domain_model_location.sys_language_uid IN (-1,0)',
 			),
 		),
 		'l10n_diffsource' => array(
@@ -98,7 +98,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'name' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.name',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.name',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -107,7 +107,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'additional' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.additional',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.additional',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -116,7 +116,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'description' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.description',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.description',
 			'config' => array(
 				'type' => 'text',
 				'cols' => 40,
@@ -137,7 +137,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'contact' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.contact',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.contact',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -146,7 +146,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'street' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.street',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.street',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -155,7 +155,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'zip' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.zip',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.zip',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -164,7 +164,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'city' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.city',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.city',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -173,7 +173,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'country' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.country',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.country',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -182,7 +182,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'phone' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.phone',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.phone',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -191,7 +191,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'fax' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.fax',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.fax',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -200,7 +200,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'url' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.url',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.url',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -209,7 +209,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'email' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.email',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.email',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -218,7 +218,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'latitude' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.latitude',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.latitude',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -227,7 +227,7 @@ $TCA['tx_famelolocation_domain_model_location'] = array(
 		),
 		'longitude' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:famelo_location/Resources/Private/Language/locallang_db.xlf:tx_famelolocation_domain_model_location.longitude',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.longitude',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,

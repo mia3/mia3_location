@@ -1,5 +1,5 @@
 <?php
-namespace Famelo\FameloLocation\ViewHelpers;
+namespace Mia3\Mia3Location\ViewHelpers;
 
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *

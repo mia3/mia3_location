@@ -1,0 +1,10 @@
+{
+    "name": "mia3/mia3_location",
+    "description": "TYPO3 Location Extension",
+    "type": "typo3-cms-extension",
+    "autoload": {
+        "psr-4": {
+            "Mia3\\Mia3Location\\": "Classes"
+        }
+    }
+}
