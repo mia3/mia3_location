@@ -444,6 +444,9 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	public function getMarkerImage() {
 		foreach ($this->categories as $category) {
+			if (!is_object($category->getLocationMarker())) {
+				continue;
+			}
 			return $category->getLocationMarker()->getOriginalResource()->getPublicUrl();
 		}
 	}

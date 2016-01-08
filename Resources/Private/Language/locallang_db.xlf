@@ -27,6 +27,9 @@
 			<trans-unit id="tx_mia3location_domain_model_location.city">
 				<source>City</source>
 			</trans-unit>
+			<trans-unit id="tx_mia3location_domain_model_location.region">
+				<source>Region</source>
+			</trans-unit>
 			<trans-unit id="tx_mia3location_domain_model_location.country">
 				<source>Country</source>
 			</trans-unit>

@@ -1,70 +1,96 @@
-<f:form action="list" class="form-inline">
-<div class="form-group">
-	<f:form.textfield class="form-control" placeholder="Straße, PLZ..." name="address" value="{address}"/>
-</div>
-<div class="form-group">
-	<f:form.select name="radius" class="form-control" options="{5: '5', 10: '10', 20: '20', 30: '30'}" value="{radius}" />
-</div>
-<div class="form-group">
-	<f:form.select name="country" class="form-control" options="{countries}" value="{country}"/>
-</div>
-<div class="form-group">
-	<input type="submit" class="btn btn-primary" value="Suchen" />
-</div>
-</f:form>
+<div class="locations">
+	<f:flashMessages renderMode="div" />
 
-<f:flashMessages renderMode="div" />
+	<div id="map-canvas" style="height:350px; width: 100%; margin-bottom: 20px;"></div>
 
-<div id="map-canvas" style="height:350px; width: 100%; margin-bottom: 20px;"></div>
-
-<div class="results">
-	<f:for each="{locations}" as="location">
-		<div class="location col-md-4" data-latitude="{location.latitude}" data-longitude="{location.longitude}" data-marker="{location.markerImage}">
-			<div class="locationinner">
-				<h3 class="title">{location.name}</h3>
-				<f:if condition="{location.description}">
-					{location.description -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}<br />
-				</f:if>
-				<f:if condition="{location.street}">
-					{location.street}<br />
-				</f:if>
-				<f:if condition="{location.zip}">
-					{location.zip}<br />
-				</f:if>
-				<f:if condition="{location.city}">
-					{location.city}<br />
-				</f:if>
-				<f:if condition="{location.phone}">
-					{location.phone}<br />
-				</f:if>
-				<f:if condition="{location.fax}">
-					{location.fax}<br />
-				</f:if>
-				<f:if condition="{location.url}">
-					<a href="http://{location.url}" target="_blank">{location.url}</a><br />
-				</f:if>
-				<f:if condition="{location.email}">
-					{location.email}<br />
-				</f:if>
-				<a href="http://maps.google.de/maps?q={location.latitude},{location.longitude}" target="_blank">Navigation mit Google Maps</a>
-				<!-- <f:link.action action="show" arguments="{location : location}"></f:link.action> -->
-
-				<f:for each="{location.categories}" as="category">
-					{category.title}
-				</f:for>
-
-				<div class="popup" style="display: none;">
-					<h3 class="title">{location.name}</h3>
-					{location.description}
-					{location.street}
-					{location.zip}
-					{location.city}
-				</div>
+	<f:form action="list" class="form-inline box black">
+		<div class="content">
+			<f:form.hidden name="country" value="Switzerland" />
+			<div class="form-group">
+				<f:form.textfield class="form-control" placeholder="Straße, PLZ..." name="address" value="{address}"/>
+			</div>
+			<div class="form-group">
+				<f:form.select name="radius" class="form-control form-compact" options="{5: '5', 10: '10', 20: '20', 30: '30', 50: '50', 100: '100'}" value="{radius}" />
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Suchen</button>
 			</div>
 		</div>
-	</f:for>
-</div>
+	</f:form>
 
+	<table class="results table table-bordered table-striped">
+		<f:for each="{locations}" as="location">
+			<tr>
+				<td>
+					<div class="location container-fluid" data-latitude="{location.latitude}" data-longitude="{location.longitude}" data-marker="{location.markerImage}">
+						<div class="row preview">
+							<div class="col-xs-6 col-sm-3 preview-column">
+								<p>
+									<strong class="title">{location.name}</strong>
+									<f:if condition="{location.description}">
+										<br /><a href="" class="js-action-toggle-details">weitere Informationen &rsaquo;</a>
+									</f:if>
+								</p>
+							</div>
+							<div class="col-xs-6 col-sm-3 preview-column">
+								<p>
+									<f:if condition="{location.street}">
+										{location.street}<br />
+									</f:if>
+									<f:if condition="{location.zip}">
+										{location.zip}
+									</f:if>
+									<f:if condition="{location.city}">
+										{location.city}
+									</f:if>
+									<!-- <f:if condition="{location.country}">
+										{location.country}
+									</f:if> -->
+								</p>
+							</div>
+							<div class="col-xs-6 col-sm-3 preview-column">
+								<p>
+									<f:if condition="{location.phone}">
+										<f:translate key="phone" default="Phone" />: {location.phone} <br />
+									</f:if>
+									<f:if condition="{location.fax}">
+										<f:translate key="fax" default="Fax" />: {location.fax}
+									</f:if>
+								</p>
+							</div>
+							<div class="col-xs-6 col-sm-3 preview-column">
+								<p>
+									<f:if condition="{location.email}">
+										<f:translate key="email" default="E-Mail" />: {location.email}<br />
+									</f:if>
+									<f:if condition="{location.url}">
+										<a href="http://{location.url}" target="_blank">{location.url}</a>
+									</f:if>
+								</p>
+							</div>
+							<div class="details col-xs-12">
+								<f:if condition="{location.description}">
+									{location.description -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}<br />
+								</f:if>
+								<!-- <f:link.action action="show" arguments="{location : location}"></f:link.action> -->
+							</div>
+							<div class="popup" style="display: none;">
+								<h3 class="title">{location.name}</h3>
+								{location.street}
+								{location.zip}
+								{location.city}
+
+								<a href="http://maps.google.de/maps?q={location.latitude},{location.longitude}" target="_blank">
+									<f:translate key="navigate" default="Navigate with Google Maps" />
+								</a>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</f:for>
+	</table>
+</div>
 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 
@@ -93,16 +119,25 @@
 	// 	});
 	// });
 
+	$('.js-action-toggle-details').click(function(e){
+		e.preventDefault();
+		$(this).parents('.location').toggleClass('active');
+	});
+
 	function initialize() {
 		var map;
 		var defaultLatitude = {mapLatitude};
 		var defaultLongitude = {mapLongitude};
 		var address = "{address}";
-		// var clusterImage = "{f:uri.resource(path:'Media/poi-stone.png')}";
 		var mapOptions = {
 			zoom: defaultZoom,
 			center: new google.maps.LatLng(defaultLatitude, defaultLongitude),
-			mapTypeId: google.maps.MapTypeId.ROADMAP
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			styles: [{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"stylers":[{"hue":"#00aaff"},{"saturation":-100},{"gamma":2.15},{"lightness":12}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"visibility":"on"},{"lightness":24}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":57}]}],
+			mapTypeControlOptions: {
+				mapTypeIds: []
+			},
+			streetViewControl: false
 		};
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
@@ -136,12 +171,12 @@
 				infowindow.open(map, marker);
 			});
 
-			 location.mouseenter(function(){
-			 	infowindow.open(map, marker);
-			 });
-			 location.mouseleave(function(){
-			 	infowindow.close(map, marker);
-			 });
+			//  location.mouseenter(function(){
+			//  	infowindow.open(map, marker);
+			//  });
+			//  location.mouseleave(function(){
+			//  	infowindow.close(map, marker);
+			//  });
 
 			 markers.push(marker);
 		});

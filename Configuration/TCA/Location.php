@@ -162,6 +162,15 @@ $TCA['tx_mia3location_domain_model_location'] = array(
 				'eval' => 'trim'
 			),
 		),
+		'region' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.region',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
 		'country' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.country',
