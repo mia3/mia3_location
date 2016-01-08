@@ -16,5 +16,7 @@ plugin.tx_mia3location {
 		defaultMapLatitude = 51.9518727
 		defaultMapLongitude = 8.400445
 		showAll = 0
+		groupByCategory = 0
+		searchColumns = name
 	}
 }

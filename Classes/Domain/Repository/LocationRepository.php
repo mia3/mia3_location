@@ -1,38 +1,46 @@
 <?php
 namespace Mia3\Mia3Location\Domain\Repository;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2012-2013 Felix Kopp <felix-source@phorax.com>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
 /**
- * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUser
  *
  */
 class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-	public function findNearBy($latitude, $longitude, $distance=30) {
+	/**
+	 * @var string
+	 */
+	protected $tableName = 'tx_mia3location_domain_model_location';
+
+	public function findNearBy($search, $latitude, $longitude, $distance=30, $searchColumns = array(), $categories = array()) {
         $pi = M_PI;
+
+		$whereParts = array(
+			'distance <= ' . intval($distance)
+		);
+
+		if (strlen($search) > 0) {
+			$search = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . utf8_decode($search) . '%', $this->tableName);
+	        foreach ($searchColumns as $column) {
+	        	$whereParts[] = '`' . $column . '` LIKE ' . $search;
+	        }
+        }
+
+        $additionalWhere = array('1=1');
+
+		if (count($categories) > 0) {
+			$locationsInCategoryQuery = '
+				SELECT uid_foreign
+				FROM sys_category_record_mm
+				WHERE sys_category_record_mm.tablenames = "tx_mia3location_domain_model_location"
+				AND sys_category_record_mm.uid_local IN (' . implode(',', $categories) . ')';
+
+			$result = $GLOBALS['TYPO3_DB']->sql_query($locationsInCategoryQuery);
+			$locationsInCategoryUids = array();
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+				$locationsInCategoryUids[] = $row['uid_foreign'];
+			}
+			$additionalWhere[] = 'uid in (' . implode(',', $locationsInCategoryUids) . ')';
+        }
+
         $query = 'SELECT *, (
         	((acos(
 				sin((' . ($latitude * $pi / 180) . ')) * sin((latitude * ' . $pi . ' / 180))
@@ -42,18 +50,40 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				cos(((' . $longitude . ' - longitude) * ' . $pi . ' / 180))
 			)) * 180 / ' . $pi . ') * 60 * 1.423
 		) as distance
-		FROM tx_famelolocation_domain_model_location
-		HAVING distance <= ' . intval($distance) . '
-		AND deleted = "0"
-		AND hidden = "0"
+		FROM ' . $this->tableName . '
+		HAVING (' . implode(' OR ', $whereParts) . ')
+			   AND (' . implode(' AND ', $additionalWhere) . ')
+		' . $GLOBALS['TSFE']->sys_page->enableFields($this->tableName) . '
 		ORDER BY distance ASC';
+        $result = $GLOBALS['TYPO3_DB']->sql_query($query);
+
+        $locations = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			$locations[$row['uid']] = $this->findByUid($row['uid']);
+		}
+		return $locations;
+	}
+
+	public function findByColumns($search, $columns) {
+		$search = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $search . '%');
+
+        $whereParts = array();
+        foreach ($columns as $column) {
+        	$whereParts[] = $column . ' LIKE ' . $search;
+        }
+
+        $query = 'SELECT *
+		FROM ' . $this->tableName . '
+		WHERE (' . implode(' AND ', $whereParts) . ') ' . $GLOBALS['TSFE']->sys_page->enableFields($this->tableName) . '
+		ORDER BY name';
 
         $result = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         $locations = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			$locations[] = $this->findByUid($row['uid']);
+			$locations[$row['uid']] = $this->findByUid($row['uid']);
 		}
+
 		return $locations;
 	}
 }

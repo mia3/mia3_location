@@ -3,7 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-09-17T16:19:35Z" product-name="mia3_location">
 		<header/>
 		<body>
-
 			<trans-unit id="tx_mia3location_domain_model_location">
 				<source>Location</source>
 			</trans-unit>
@@ -48,6 +47,15 @@
 			</trans-unit>
 			<trans-unit id="tx_mia3location_domain_model_location.longitude">
 				<source>Longitude</source>
+			</trans-unit>
+			<trans-unit id="tx_mia3location_domain_model_location.categories">
+				<source>Categories</source>
+			</trans-unit>
+			<trans-unit id="tx_mia3location_domain_model_category.location_marker">
+				<source>Location Marker</source>
+			</trans-unit>
+			<trans-unit id="tx_mia3location_domain_model_category.tab_name">
+				<source>Location</source>
 			</trans-unit>
 
 		</body>

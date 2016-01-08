@@ -1,10 +1,11 @@
 <?php
 namespace Mia3\Mia3Location\Domain\Model;
 
+use TYPO3\CMS\Extbase\Domain\Model\Category;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Famelo OHG
+ *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Mia3 OHG
  *
  *  All rights reserved
  *
@@ -26,110 +27,115 @@ namespace Mia3\Mia3Location\Domain\Model;
  ***************************************************************/
 
 /**
- *
+ * Location
  *
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
+	 * description
+	 *
+	 * @var \string
+	 */
+	protected $additional = NULL;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mia3\Mia3Location\Domain\Model\Category>
+	 * @lazy
+	 */
+	protected $categories = NULL;
+
+	/**
 	 * name
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $name;
+	protected $name = '';
 
 	/**
 	 * description
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $additional;
+	protected $description = '';
 
 	/**
 	 * description
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $description;
-
-	/**
-	 * description
-	 *
-	 * @var \string
-	 */
-	protected $contact;
+	protected $contact = NULL;
 
 	/**
 	 * street
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $street;
+	protected $street = '';
 
 	/**
 	 * zip
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $zip;
+	protected $zip = '';
 
 	/**
 	 * city
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $city;
-
-	/**
-	 * phone
-	 *
-	 * @var \string
-	 */
-	protected $phone;
-
-	/**
-	 * fax
-	 *
-	 * @var \string
-	 */
-	protected $fax;
-
-	/**
-	 * url
-	 *
-	 * @var \string
-	 */
-	protected $url;
+	protected $city = '';
 
 	/**
 	 * country
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $country;
+	protected $country = NULL;
+
+	/**
+	 * phone
+	 *
+	 * @var string
+	 */
+	protected $phone = '';
+
+	/**
+	 * fax
+	 *
+	 * @var string
+	 */
+	protected $fax = '';
+
+	/**
+	 * url
+	 *
+	 * @var string
+	 */
+	protected $url = '';
 
 	/**
 	 * email
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $email;
+	protected $email = '';
 
 	/**
 	 * latitude
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $latitude;
+	protected $latitude = '';
 
 	/**
 	 * longitude
 	 *
-	 * @var \string
+	 * @var string
 	 */
-	protected $longitude;
+	protected $longitude = '';
 
 	/**
 	 * Returns the name
@@ -392,5 +398,54 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->longitude = $longitude;
 	}
 
+	/**
+	 * Get categories
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mia3\Mia3Location\Domain\Model\Category>
+	 */
+	public function getCategories() {
+		return $this->categories;
+	}
+
+	/**
+	 * Get first category
+	 *
+	 * @return Category
+	 */
+	public function getFirstCategory() {
+		$categories = $this->getCategories();
+		if (!is_null($categories)) {
+			$categories->rewind();
+			return $categories->current();
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
+	 * Set categories
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
+	 * @return void
+	 */
+	public function setCategories($categories) {
+		$this->categories = $categories;
+	}
+
+	/**
+	 * Adds a category to this categories.
+	 *
+	 * @param \Mia3\Mia3Location\Domain\Model\Category $category
+	 * @return void
+	 */
+	public function addCategory(Category $category) {
+		$this->getCategories()->attach($category);
+	}
+
+	public function getMarkerImage() {
+		foreach ($this->categories as $category) {
+			return $category->getLocationMarker()->getOriginalResource()->getPublicUrl();
+		}
+	}
+
 }
-?>

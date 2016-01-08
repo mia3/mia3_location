@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_mia3location_domain_model_location'] = array(
 	'ctrl' => $TCA['tx_mia3location_domain_model_location']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, latitude, longitude',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, categories, latitude, longitude',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, latitude, longitude,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, additional, description, contact, street, zip, city, country, phone, fax, url, email, categories, latitude, longitude,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -21,6 +21,7 @@ $TCA['tx_mia3location_domain_model_location'] = array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
@@ -121,17 +122,7 @@ $TCA['tx_mia3location_domain_model_location'] = array(
 				'type' => 'text',
 				'cols' => 40,
 				'rows' => 15,
-				'eval' => 'trim',
-				'wizards' => array(
-					'RTE' => array(
-						'icon' => 'wizard_rte2.gif',
-						'notNewRecords'=> 1,
-						'RTEonly' => 1,
-						'script' => 'wizard_rte.php',
-						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-						'type' => 'script'
-					)
-				)
+				'eval' => 'trim'
 			),
 			'defaultExtras' => 'richtext:rte_transform[flag=rte_enabled|mode=ts]',
 		),
@@ -233,6 +224,34 @@ $TCA['tx_mia3location_domain_model_location'] = array(
 				'size' => 30,
 				'eval' => 'trim'
 			),
+		),
+		'categories' => array(
+			'exclude' => 1,
+			'l10n_mode' => 'mergeIfNotBlank',
+			'label' => 'LLL:EXT:mia3_location/Resources/Private/Language/locallang_db.xlf:tx_mia3location_domain_model_location.categories',
+			'config' => array(
+				'type' => 'select',
+				'renderType' => 'selectTree',
+				'MM' => 'sys_category_record_mm',
+				'MM_match_fields' => array(
+					'fieldname' => 'categories',
+					'tablenames' => 'tx_mia3location_domain_model_location',
+				),
+                'treeConfig' => array(
+					'appearance' => array(
+						'expandAll' => 1,
+						'showHeader' => 1
+					),
+					'parentField' => 'parent'
+				),
+				'MM_opposite_field' => 'items',
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
+				'size' => 10,
+				'autoSizeMax' => 20,
+				'minitems' => 0,
+				'maxitems' => 20,
+			)
 		),
 	),
 );

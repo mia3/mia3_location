@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-09-17T16:19:35Z" product-name="famelo_location">
+		<header/>
+		<body>
+			<trans-unit id="flexforms_tab.settings">
+				<source>Einstellungen</source>
+			</trans-unit>
+			<trans-unit id="flexforms_general.mode">
+				<source>Modus</source>
+			</trans-unit>
+			<trans-unit id="flexforms_general.mode.combined">
+				<source>Kombiniert</source>
+			</trans-unit>
+			<trans-unit id="flexforms_general.mode.map">
+				<source>Karte</source>
+			</trans-unit>
+			<trans-unit id="flexforms_general.categories">
+				<source>Kategorien</source>
+			</trans-unit>
+			<trans-unit id="flexforms_general.targetPid">
+				<source>Zielseite</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -9,11 +9,9 @@ if (!defined('TYPO3_MODE')) {
 	'Locations'
 );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	$_EXTKEY,
-	'Locationsearch',
-	'Location Search'
-);
+$pluginName = 'mia3location_locations';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginName] = 'pi_flexform';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginName, 'FILE:EXT:mia3_location/Configuration/FlexForms/Locations.xml');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'MIA3 Locations');
 

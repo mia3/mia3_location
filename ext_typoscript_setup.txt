@@ -1,0 +1,21 @@
+
+config.tx_extbase{
+    persistence{
+        classes{
+
+            TYPO3\CMS\Extbase\Domain\Model\Category {
+                subclasses {
+                    Tx_Mia3Location_Category = Mia3\Mia3Location\Domain\Model\Category
+
+          		}
+            }
+            Mia3\Mia3Location\Domain\Model\Category {
+                mapping {
+                    tableName = sys_category
+                    recordType = Tx_Mia3Location_Category
+                }
+            }
+
+    	}
+    }
+}

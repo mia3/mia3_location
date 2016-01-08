@@ -1,10 +1,12 @@
 <?php
 namespace Mia3\Mia3Location\Controller;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Famelo OHG
+ *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Mia3 OHG
  *
  *  All rights reserved
  *
@@ -35,27 +37,15 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 	/**
 	 * @var \Mia3\Mia3Location\Domain\Repository\LocationRepository
+	 * @inject
 	 */
 	protected $locationRepository;
 
 	/**
 	 * @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository
+	 * @inject
 	 */
 	protected $countryRepository;
-
-	/**
-	 * @param \Mia3\Mia3Location\Domain\Repository\LocationRepository $locationRepository
-	 */
-	public function injectLocationRepository(\Mia3\Mia3Location\Domain\Repository\LocationRepository $locationRepository) {
-		$this->locationRepository = $locationRepository;
-	}
-
-	/**
-	 * @param \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countryRepository
-	 */
-	public function injectCountryRepository(\SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countryRepository) {
-		$this->countryRepository = $countryRepository;
-	}
 
 	/**
 	 * action list
@@ -77,27 +67,43 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$locations = array();
 		$this->view->assign('mapLatitude', $this->settings['defaultMapLatitude']);
 		$this->view->assign('mapLongitude', $this->settings['defaultMapLongitude']);
-		if ($address === NULL) {
+
+		if (strlen($this->settings['categories']) > 0) {
+			$categories = GeneralUtility::trimExplode(',', $this->settings['categories'], TRUE);
+		} else {
+			$categories = array();
+		}
+
+		if (empty($address)) {
 			if ($this->settings['showAll'] == 1) {
 				$locations = $this->locationRepository->findAll();
 			}
 		} elseif (preg_match('/^[0-9]*$/', $address) && strlen($address) < 5) {
 			$this->flashMessageContainer->add('Bitte geben sie eine Vollständige Postleitzahl ein', NULL, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 		} else {
-			$address .= ',' . $country;
-			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
+			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address .  ',' . $country).'&sensor=false&language=de';
 			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
 			$adr = json_decode($addressData);
 			$coordinates = $adr->results[0]->geometry->location;
+
+			$latitude = NULL;
+			$longitude = NULL;
 			if ($coordinates !== NULL) {
 				$latitude = $coordinates->lat;
 				$longitude = $coordinates->lng;
+			}
 
-				$locations = $this->locationRepository->findNearBy($latitude, $longitude, $radius);
+			$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
+			if ($latitude !== NULL) {
 				$this->view->assign('mapLatitude', $latitude);
 				$this->view->assign('mapLongitude', $longitude);
 			}
 		}
+
+		if ($this->settings['groupByCategory']) {
+			$this->groupByCategories($locations);
+		}
+
 		$this->view->assign('locations', $locations);
 		$this->view->assign('radius', $radius);
 
@@ -106,8 +112,6 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$countries[$country->getShortNameEn()] = $country->getNameLocalized();
 		}
 		$this->view->assign('countries', $countries);
-
-		// $this->importAction(PATH_typo3 . '../fileadmin/pikeur_locations.csv');
 	}
 
 	public function importAction($filename) {
@@ -180,29 +184,71 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @param \Mia3\Mia3Location\Domain\Model\Location $location
 	 * @return void
 	 */
-	public function showAction(\Mia3\Mia3Location\Domain\Model\Location $location) {
-		$this->view->assign('location', $location);
-	}
-
-	/**
-	 * action search
-	 *
-	 * @param string $address
-	 * @param integer $radius
-	 * @return void
-	 */
-	public function searchAction($address = NULL, $radius = NULL) {
-		if (isset($_REQUEST['tx_famelolocation_locations']['address'])) {
-			$address = $_REQUEST['tx_famelolocation_locations']['address'];
-		}
-		if (isset($_REQUEST['tx_famelolocation_locations']['radius'])) {
-			$radius = $_REQUEST['tx_famelolocation_locations']['radius'];
-		}
+	public function mapAction() {
 		if ($radius === NULL) {
 			$radius = $this->settings['defaultRadius'];
 		}
-		$this->view->assign('address', $address);
 		$this->view->assign('radius', $radius);
+		$this->view->assign('mapLatitude', $this->settings['defaultMapLatitude']);
+		$this->view->assign('mapLongitude', $this->settings['defaultMapLongitude']);
+	}
+
+	/**
+	 * action show
+	 *
+	 * @param \Mia3\Mia3Location\Domain\Model\Location $location
+	 * @return void
+	 */
+	public function showAction(\Mia3\Mia3Location\Domain\Model\Location $location) {
+		$this->view->assign('location', $location);
+		$this->view->assign('mapLatitude', $location->getLatitude());
+		$this->view->assign('mapLongitude', $location->getLongitude());
+	}
+
+	/**
+	 * action show
+	 *
+	 * @param \Mia3\Mia3Location\Domain\Model\Location $location
+	 * @return void
+	 */
+	public function teaserAction() {
+		if ($radius === NULL) {
+			$radius = $this->settings['defaultRadius'];
+		}
+		$this->view->assign('radius', $radius);
+		$this->view->assign('mapLatitude', $this->settings['defaultMapLatitude']);
+		$this->view->assign('mapLongitude', $this->settings['defaultMapLongitude']);
+	}
+
+	/**
+	 * action list
+	 *
+	 * @param string $longitude
+	 * @param string $latitude
+	 * @return void
+	 */
+	public function ajaxSearchAction($longitude = NULL, $latitude = NULL) {
+		$radius = $this->settings['defaultRadius'];
+
+		if (strlen($this->settings['categories']) > 0) {
+			$categories = array_merge(
+				GeneralUtility::trimExplode(',',
+					CategoryService::getChildrenCategories($this->settings['categories'], 0, '', TRUE),
+				TRUE),
+				GeneralUtility::trimExplode(',', $this->settings['categories'], TRUE)
+			);
+		} else {
+			$categories = array();
+		}
+		$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
+
+		$this->view->assign('mapLatitude', $latitude);
+		$this->view->assign('mapLongitude', $longitude);
+		$this->groupByCategories($locations);
+		$this->view->assign('locations', $locations);
+
+		echo $this->view->render();
+		exit();
 	}
 
 	public function getCountryFromIp() {
@@ -228,6 +274,31 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		}
 
 		return $country;
+	}
+
+	public function groupByCategories($locations) {
+		if ($this->settings['groupByCategory'] == 1) {
+			$categories = array();
+			foreach ($locations as $location) {
+				if ($location === NULL) {
+					continue;
+				}
+				$category = $location->getFirstCategory();
+				if ($category !== NULL) {
+					if(!isset($categories[$category->getSorting()])) {
+						$categories[$category->getSorting()] = $category;
+					}
+
+					$categories[$category->getSorting()]->locations[] = $location;
+
+					unset($locations[$location->getUid()]);
+				}
+			}
+
+			ksort($categories);
+
+			$this->view->assign('categories', $categories);
+		}
 	}
 
 }

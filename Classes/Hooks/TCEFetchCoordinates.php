@@ -3,7 +3,7 @@ namespace Mia3\Mia3Location\Hooks;
 
 class TCEFetchCoordinates {
 	function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference) {
-		if ($table == 'tx_famelolocation_domain_model_location') {
+		if ($table == 'tx_mia3location_domain_model_location') {
 			$where = 'uid = ' . $id;
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',

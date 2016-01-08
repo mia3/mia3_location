@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-07-09T10:21:10Z" product-name="famelo_location">
+		<header/>
+		<body>
+			<trans-unit id="location_marker.description">
+				<source>locationMarker</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -20,6 +20,7 @@ CREATE TABLE tx_mia3location_domain_model_location (
 	email varchar(255) DEFAULT '' NOT NULL,
 	latitude varchar(255) DEFAULT '' NOT NULL,
 	longitude varchar(255) DEFAULT '' NOT NULL,
+	categories int(11) DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -49,4 +50,11 @@ CREATE TABLE tx_mia3location_domain_model_location (
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY language (l10n_parent,sys_language_uid)
 
+);
+
+#
+# Table structure for table 'sys_category'
+#
+CREATE TABLE sys_category (
+	location_marker int(11) unsigned NOT NULL default '0'
 );

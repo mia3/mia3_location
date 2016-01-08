@@ -1,0 +1,134 @@
+{namespace m=TYPO3\mfshvcore\ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
+
+<div class="locations-teaser">
+	<div class="map-overlay">
+		<div class="location-search">
+			<f:form action="list" class="search-form" pageUid="{settings.targetPid}">
+				<span class="title">Ortsgruppe finden</span>
+				<div class="form-group">
+					<f:form.textfield placeholder="Straße, PLZ..." name="address" value="{address}"/>
+					<f:form.select name="radius" class="selectpicker" options="{5: '+5 km', 10: '+10 km', 20: '+20 km', 30: '+30 km', 40: '+40 km', 50: '+50 km'}" value="{radius}" />
+					<f:form.hidden name="country" value="Germany"/>
+					<button type="submit">
+						<span class="icon-magnifier icon-iron"></span>
+					</button>
+				</div>
+			</f:form>
+		</div>
+
+        <a href="{m:settings(path:'target.shop')}" class="pull-right banner">
+            <img src="{f:uri.resource(path: 'Media/ShopBanner.png' extensionName: 'mfshvcore')}" alt="SV Shop" class="visible-md visible-lg"/>
+            <img src="{f:uri.resource(path: 'Media/SV_Shop_Banner_sm.jpg' extensionName: 'mfshvcore')}" alt="SV Shop" class="visible-sm" />
+        </a>
+	</div>
+
+	<f:image src="EXT:mfshvcore/Resources/Public/Media/map-augsburg.png" width="620c" height="360c" class="img-responsive visible-xs" />
+	<div id="map-canvas" style="height:400px; width: 100%;" class="hidden-xs"></div>
+
+	<div class="location-result-container hidden">
+		<f:if condition="{categories}">
+			<f:then>
+				<f:for each="{categories}" as="category">
+					<div class="location-results category-{category.uid}">
+						<h6>{category}</h6>
+						<f:for each="{category.locations}" as="location" iteration="iteration" >
+							<f:render partial="Location" arguments="{_all}" />
+						</f:for>
+					</div>
+				</f:for>
+			</f:then>
+			<f:else>
+				<div class="no-entries-found">Leider konnten keine Einträge gefunden werden.</div>
+			</f:else>
+		</f:if>
+	</div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="{f:uri.resource(path:'Scripts/MarkerClusterer.js')}"></script>
+<script src="{f:uri.resource(path:'Scripts/MarkerWithLabel.js')}"></script>
+
+<script>
+	var defaultZoom = {settings.defaultZoom};
+	var defaultLatitude = {mapLatitude};
+	var defaultLongitude = {mapLongitude};
+	function initialize() {
+		var map;
+		var address = "{address}";
+		// var clusterImage = "{f:uri.resource(path:'Media/poi-stone.png')}";
+		var mapOptions = {
+			zoom: defaultZoom,
+            scrollwheel: false,
+            navigationControl: false,
+            mapTypeControl: false,
+            scaleControl: false,
+            draggable: false,
+			center: new google.maps.LatLng(defaultLatitude, defaultLongitude),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		if (address != "") {
+			new google.maps.Marker({
+				position: new google.maps.LatLng(defaultLatitude, defaultLongitude),
+				map: map,
+				title: address,
+				icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+			});
+		}
+
+		var markers = [];
+		$('.location-results .location').each(function(){
+			var location = $(this);
+			var latitude = location.attr('data-latitude');
+			var longitude = location.attr('data-longitude');
+			var markerImage = location.attr('data-marker');
+
+			var marker = new MarkerWithLabel({
+				position: new google.maps.LatLng(latitude, longitude),
+				map: map,
+				title: location.find('.title').text(),
+				icon: markerImage
+			});
+
+			 google.maps.event.addListener(marker, 'click', function() {
+				$('.result-popup').html(location.find('.popup').html()).show();
+			});
+
+			 $('.result-popup').on('click', '.close', function(e){
+			 	$('.result-popup').html('').hide();
+			 	e.preventDefault();
+			 });
+
+			 markers.push(marker);
+		});
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+	var ajaxUri = "{f:uri.page()}";
+
+	navigator.geolocation.getCurrentPosition(function(position) {
+		defaultLongitude = position.coords.longitude;
+		defaultLatitude = position.coords.latitude;
+		$.ajax({
+			type: "POST",
+			url: ajaxUri,
+			data: {
+				tx_famelolocation_locations: {
+					action: 'ajaxSearch',
+					longitude: position.coords.longitude,
+					latitude: position.coords.latitude,
+					standalone: true
+				}
+			},
+			success: function( data ) {
+				console.log(data);
+				$('.location-result-container').html(data);
+				initialize();
+			},
+			dataType: "html"
+		});
+	});
+</script>
