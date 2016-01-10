@@ -78,8 +78,6 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			if ($this->settings['showAll'] == 1) {
 				$locations = $this->locationRepository->findAll();
 			}
-		} elseif (preg_match('/^[0-9]*$/', $address) && strlen($address) < 5) {
-			$this->flashMessageContainer->add('Bitte geben sie eine Vollständige Postleitzahl ein', NULL, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 		} else {
 			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address .  ',' . $country).'&sensor=false&language=de';
 			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
