@@ -76,12 +76,19 @@
 							</div>
 							<div class="popup" style="display: none;">
 								<h3 class="title">{location.name}</h3>
-								{location.street}
-								{location.zip}
-								{location.city}
+								<f:if condition="{location.street}">
+									{location.street}<br />
+								</f:if>
+								<f:if condition="{location.zip}">
+									{location.zip}
+								</f:if>
+								<f:if condition="{location.city}">
+									{location.city}
+								</f:if>
 
 								<a href="http://maps.google.de/maps?q={location.latitude},{location.longitude}" target="_blank">
-									<f:translate key="navigate" default="Navigate with Google Maps" />
+									<br />
+									<f:translate key="navigate" default="Route planen" />
 								</a>
 							</div>
 						</div>
