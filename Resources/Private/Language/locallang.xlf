@@ -41,7 +41,7 @@
 				<source>longitude</source>
 			</trans-unit>
 			<trans-unit id="navigate">
-				<source>Route Planen</source>
+				<source>Route planen</source>
 				<target>Route planen</target>
 			</trans-unit>
 		</body>
