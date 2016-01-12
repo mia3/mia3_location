@@ -18,7 +18,7 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		);
 
 		if (strlen($search) > 0) {
-			$search = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . utf8_decode($search) . '%', $this->tableName);
+			$search = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $search . '%', $this->tableName);
 	        foreach ($searchColumns as $column) {
 	        	$whereParts[] = '`' . $column . '` LIKE ' . $search;
 	        }

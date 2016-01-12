@@ -91,7 +91,7 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				$latitude = $result['latitude'];
 				$longitude = $result['longitude'];
 				$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
-				if ($latitude !== NULL && count($locations) > 0) {
+				if ($latitude !== NULL) {
 					$this->view->assign('searchLatitude', $latitude);
 					$this->view->assign('searchLongitude', $longitude);
 				}
@@ -107,7 +107,7 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			}
 
 			$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
-			if ($latitude !== NULL && count($locations) > 0) {
+			if ($latitude !== NULL) {
 				$this->view->assign('searchLatitude', $latitude);
 				$this->view->assign('searchLongitude', $longitude);
 			}
@@ -259,7 +259,8 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	public function findCoordinates($address, $country) {
-		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address .  ',' . $country['cn_short_en']).'&sensor=false&language=de';
+		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.($address .  ',' . $country['cn_short_en']).'&sensor=false&language=de';
+
 		$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
 		$body = json_decode($addressData);
 		if (!isset($this->settings['limitSearchToCountries']) || empty($this->settings['limitSearchToCountries'])) {
