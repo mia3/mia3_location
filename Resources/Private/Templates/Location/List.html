@@ -160,7 +160,7 @@
 
 		if (address != "" && searchLatitude != 0 && searchLongitude != 0) {
 			new google.maps.Marker({
-				position: new google.maps.LatLng(defaultLatitude, defaultLongitude),
+				position: new google.maps.LatLng(searchLatitude, searchLongitude),
 				map: map,
 				title: address,
 				icon: homeIcon,
