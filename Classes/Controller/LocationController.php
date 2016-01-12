@@ -60,13 +60,20 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$radius = $this->settings['defaultRadius'];
 		}
 		if ($country === NULL) {
-			$country = $this->getCountryFromIp();
+			if ($this->settings['resolveCountryByIp']) {
+				$country = $this->getCountryFromIp();
+			} else {
+				$country = $this->settings['defaultCountry'];
+			}
 		}
+		$countryInformation = $this->getCountryIsoCode($country);
 		$this->view->assign('country', $country);
 		$this->view->assign('address', $address);
 		$locations = array();
-		$this->view->assign('mapLatitude', $this->settings['defaultMapLatitude']);
-		$this->view->assign('mapLongitude', $this->settings['defaultMapLongitude']);
+		$this->view->assign('defaultLatitude', $this->settings['defaultMapLatitude']);
+		$this->view->assign('defaultLongitude', $this->settings['defaultMapLongitude']);
+		$this->view->assign('searchLatitude', 0);
+		$this->view->assign('searchLongitude', 0);
 
 		if (strlen($this->settings['categories']) > 0) {
 			$categories = GeneralUtility::trimExplode(',', $this->settings['categories'], TRUE);
@@ -78,11 +85,19 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			if ($this->settings['showAll'] == 1) {
 				$locations = $this->locationRepository->findAll();
 			}
+		} else if (preg_match('/[0-9]+/', $address) > 0) {
+			$result = \Mia3\GeoDb\GeoDb::findByPostalCode($address, strtoupper($countryInformation['cn_iso_2']));
+			if (is_array($result)) {
+				$latitude = $result['latitude'];
+				$longitude = $result['longitude'];
+				$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
+				if ($latitude !== NULL && count($locations) > 0) {
+					$this->view->assign('searchLatitude', $latitude);
+					$this->view->assign('searchLongitude', $longitude);
+				}
+			}
 		} else {
-			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address .  ',' . $country).'&sensor=false&language=de';
-			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
-			$adr = json_decode($addressData);
-			$coordinates = $adr->results[0]->geometry->location;
+			$coordinates = $this->findCoordinates($address, $countryInformation);
 
 			$latitude = NULL;
 			$longitude = NULL;
@@ -92,9 +107,9 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			}
 
 			$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
-			if ($latitude !== NULL) {
-				$this->view->assign('mapLatitude', $latitude);
-				$this->view->assign('mapLongitude', $longitude);
+			if ($latitude !== NULL && count($locations) > 0) {
+				$this->view->assign('searchLatitude', $latitude);
+				$this->view->assign('searchLongitude', $longitude);
 			}
 		}
 
@@ -110,70 +125,6 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$countries[$country->getShortNameEn()] = $country->getNameLocalized();
 		}
 		$this->view->assign('countries', $countries);
-	}
-
-	public function importAction($filename) {
-		$contents = file_get_contents($filename);
-		$rows = explode("\r", $contents);
-
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-   			'tx_famelolocation_domain_model_location',
-   			'pid=79'
- 		);
-
-		for ($i=1; $i < count($rows); $i++) {
-			$row = $rows[$i];
-			$row = str_getcsv($row, ';');
-			$location = new \Mia3\Mia3Location\Domain\Model\Location();
-			$location->setPid(79);
-			$location->setName($row[0]);
-			$location->setContact($row[3]);
-			$location->setStreet($row[1]);
-			$location->setZip($row[5]);
-			$location->setCity($row[4]);
-			$location->setCountry($row[6]);
-			$location->setPhone($row[7]);
-			$location->setFax($row[7]);
-			$location->setUrl($row[11]);
-
-			$address = implode(',', array(
-				$location->getStreet(),
-				$location->getZip(),
-				$location->getCity(),
-				$location->getCountry()
-			));
-			$coordinates = $this->getCoordinates($address);
-			if ($coordinates !== NULL) {
-				if (!empty($fieldArray['latitude']) && $fieldArray['latitude'] !== $row['latitude']) {
-
-				} else {
-					$location->setLatitude($coordinates->lat);
-				}
-				if (!empty($fieldArray['longitude']) && $fieldArray['longitude'] !== $row['longitude']) {
-
-				} else {
-					$location->setLongitude($coordinates->lng);
-				}
-			}
-			$this->locationRepository->add($location);
-		}
-	}
-
-	public function getCoordinates($address) {
-		$tmpDir = PATH_site . 'typo3temp/coordinates/';
-		if (!is_dir($tmpDir)) {
-			mkdir($tmpDir);
-		}
-		$tmpName = $tmpDir . sha1($address) . '.txt';
-		if (!file_exists($tmpName)) {
-			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
-			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
-			file_put_contents($tmpName, $addressData);
-		} else {
-			$addressData = file_get_contents($tmpName);
-		}
-		$adr = json_decode($addressData);
-		return $adr->results[0]->geometry->location;
 	}
 
 	/**
@@ -299,5 +250,37 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		}
 	}
 
+	public function getCountryIsoCode($countryName) {
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'static_countries', 'cn_short_local = "' . $countryName . '" OR cn_short_en = "' . $countryName . '"');
+		if (!isset($row['cn_iso_2'])) {
+			return array();
+		}
+		return $row;
+	}
+
+	public function findCoordinates($address, $country) {
+		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address .  ',' . $country['cn_short_en']).'&sensor=false&language=de';
+		$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
+		$body = json_decode($addressData);
+		if (!isset($this->settings['limitSearchToCountries']) || empty($this->settings['limitSearchToCountries'])) {
+			return $body->results[0]->geometry->location;
+		}
+		foreach ($body->results as $result) {
+			$matches = FALSE;
+			foreach ($result->address_components as $address_component) {
+				if (!isset($address_component->types[0]) || $address_component->types[0] !== 'country') {
+					continue;
+				}
+
+				if ($address_component->short_name == $country['cn_iso_2']) {
+					$matches = TRUE;
+					break;
+				}
+			}
+			if ($matches === TRUE) {
+				return $result->geometry->location;
+			}
+		}
+	}
 }
 ?>
