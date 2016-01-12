@@ -259,7 +259,7 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	public function findCoordinates($address, $country) {
-		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.($address .  ',' . $country['cn_short_en']).'&sensor=false&language=de';
+		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address .  ',' . $country['cn_short_en']).'&sensor=false&language=de';
 
 		$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
 		$body = json_decode($addressData);
