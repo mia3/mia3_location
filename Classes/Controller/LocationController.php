@@ -266,6 +266,9 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		if (!isset($this->settings['limitSearchToCountries']) || empty($this->settings['limitSearchToCountries'])) {
 			return $body->results[0]->geometry->location;
 		}
+		if (!is_array($body->results)) {
+			return;
+		}
 		foreach ($body->results as $result) {
 			$matches = FALSE;
 			foreach ($result->address_components as $address_component) {
