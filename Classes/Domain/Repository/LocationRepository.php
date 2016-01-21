@@ -56,6 +56,8 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		' . $GLOBALS['TSFE']->sys_page->enableFields($this->tableName) . '
 		ORDER BY distance ASC';
         $result = $GLOBALS['TYPO3_DB']->sql_query($query);
+		// echo $query;
+		// exit();
 
         $locations = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {

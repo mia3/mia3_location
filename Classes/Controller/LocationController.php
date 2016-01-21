@@ -56,6 +56,9 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return void
 	 */
 	public function listAction($address = NULL, $radius = NULL, $country = NULL) {
+		if (!isset($this->settings['defaultZoom'])) {
+			return '<span class="error">you need to include the mia3_location typoscript template!</span>';
+		}
 		if ($radius === NULL) {
 			$radius = $this->settings['defaultRadius'];
 		}
@@ -85,7 +88,7 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			if ($this->settings['showAll'] == 1) {
 				$locations = $this->locationRepository->findAll();
 			}
-		} else if (preg_match('/[0-9]+/', $address) > 0) {
+		} else if (preg_match('/[0-9]+/', $address) > 0 && class_exists('\Mia3\GeoDb\GeoDb')) {
 			$result = \Mia3\GeoDb\GeoDb::findByPostalCode($address, strtoupper($countryInformation['cn_iso_2']));
 			if (is_array($result)) {
 				$latitude = $result['latitude'];

@@ -3,6 +3,24 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
+
+if (TYPO3_MODE === 'BE') {
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Mia3.' . $_EXTKEY,
+        'tools',          // Main area
+        'txmia3locationsmod1',         // Name of the module
+        '',             // Position of the module
+        array(          // Allowed controller action combinations
+            'Backend' => 'index,import'
+        ),
+        array(          // Additional configuration
+            'access'    => 'admin',
+            'icon'      => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/marker.svg',
+            'labels'    => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml',
+        )
+    );
+}
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Locations',

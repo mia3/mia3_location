@@ -1,0 +1,71 @@
+<f:be.container>
+	<style>
+		.container {
+			max-width: 600px;
+			margin: 80px auto;
+			font-size: 14px;
+		}
+		.form-control {
+			padding: 4px 8px;
+			width: 100%;
+			display: block;
+			font-size: 14px;
+			margin: 10px 0;
+		}
+		.checkbox {
+			-ms-transform: scale(1.5); /* IE */
+			-moz-transform: scale(1.5); /* FF */
+			-webkit-transform: scale(1.5); /* Safari and Chrome */
+			-o-transform: scale(1.5); /* Opera */
+			margin-left: 10px;
+		}
+		[type="file"] {
+			border: none;
+			margin-top: 5px;
+		}
+		.help {
+			border: 1px solid #efefef;
+			background: #fafafa;
+			padding: 10px;
+			margin-bottom: 20px;
+		}
+		pre {
+			background: #fefefe;
+			padding: 10px;
+		}
+	</style>
+	<div class="container">
+		<f:form action="import" enctype="multipart/form-data">
+			<p>
+				<label>Storage PID</label>
+				<f:form.textfield name="storagePid" placeholder="pid of sysfolder/page to save locations" class="form-control"/>
+			</p>
+			<p>
+				<label>Category ID (optional)</label>
+				<f:form.textfield name="categoryUid" placeholder="30" class="form-control"/>
+			</p>
+			<p>
+				<label>Remove all Locations from Storage Folder before import</label>
+				<f:form.checkbox name="truncate" value="1" class="checkbox" />
+			</p>
+			<p>
+				<label>CSV File</label>
+				<f:form.upload name="file" />
+			</p>
+			<div class="help">
+				<p>
+					<strong>Example CSV</strong>
+				</p>
+				<pre>name; contact; street; zip; city; country; region; phone; fax; url; latitude; longitude
+Musterfirma; Nicole Bumgarner; Landsberger Allee 39; 80455; München; Deutschland; Bayern; 089 88 58 19; 089 88 58 20; nicole@musterfirma.de; 3.1234; 32.434</pre>
+				<ul>
+					<li>all fields are optional</li>
+					<li>leave latitude/longitude empty to let the import take care of the geocoding</li>
+					<li>any unknown field will simply be ignored</li>
+				</ul>
+			</div>
+
+			<button type="submit">Import</button>
+		</f:form>
+	</div>
+</f:be.container>

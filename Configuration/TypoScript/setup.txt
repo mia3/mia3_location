@@ -8,20 +8,23 @@ plugin.tx_mia3location {
 		storagePid = {$plugin.tx_mia3location.persistence.storagePid}
 	}
 	settings {
-		listPid =
-		detailPid =
 		defaultRadius = 20
 		defaultZoom = 8
 		defaultCountry = Deutschland
 		defaultMapLatitude = 51.9518727
 		defaultMapLongitude = 8.400445
+
+		listPid =
+		detailPid =
+
 		showAll = 0
 		groupByCategory = 0
 		searchColumns = name
 		resolveCountryByIp = 0
-		defaultCountry = Switzerland
-		homeIcon = /typo3conf/ext/template/Resources/Public/Media/Icons/map_marker_house.png
-		defaultIcon = /typo3conf/ext/template/Resources/Public/Media/Icons/map_marker.png
-		limitSearchToCountries = CH
+
+		homeIcon = /typo3conf/ext/mia3_location/Resources/Public/Icons/building.png
+		defaultIcon = /typo3conf/ext/mia3_location/Resources/Public/Icons/marker.png
+
+		# limitSearchToCountries = DE, CH
 	}
 }
