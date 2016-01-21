@@ -21,10 +21,10 @@ class ImportService {
 	/**
 	 * @param string $file
 	 * @param integer $pid
-	 * @param string $defaultCountry
 	 * @param integer $category
+	 * @param boolean $truncate
 	 */
-	public function import($file, $pid, $defaultCountry, $category, $truncate = FALSE) {
+	public function import($file, $pid, $category, $truncate = FALSE) {
 		ini_set("auto_detect_line_endings", true);
 		ini_set('max_execution_time', '360');
 		$encoding = $this->determineEncoding($file);
@@ -71,6 +71,9 @@ class ImportService {
 			'country'
 		);
 		foreach ($rows as $key => $row) {
+			if ($key > 300) {
+				exit();
+			}
 			$searchParts = array();
 			foreach ($searchColumns as $searchColumn) {
 				if (!isset($row[$searchColumn])) {
@@ -84,10 +87,10 @@ class ImportService {
 
 			$address = implode(',', $searchParts);
 			$googleResult = $this->getCoordinates($address);
+			echo 'address: ' . $address . '<br />';
 
 			$insertData = array(
-				'pid' => $pid,
-				'uid' => $key
+				'pid' => $pid
 			);
 			foreach ($allowedColumns as $allowedColumn => $fallbackColumn) {
 				if (isset($row[$allowedColumn])) {
@@ -96,6 +99,7 @@ class ImportService {
 					$insertData[$allowedColumn] = $googleResult[$fallbackColumn];
 				}
 			}
+			$rows[$key] = $insertData;
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
 				'tx_mia3location_domain_model_location',
 				$insertData
@@ -112,25 +116,37 @@ class ImportService {
 				);
 			}
 		}
+
+		return $rows;
 	}
 
 	public function getCoordinates($address) {
 		$tmpDir = PATH_site . 'typo3temp/coordinates/';
 		if (!is_dir($tmpDir)) {
-			mkdir($tmpDir);
+			mkdir($tmpDir, 0777, TRUE);
 		}
-		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
-		$tmpName = $tmpDir . sha1($apiURL) . '.txt';
-		if (!file_exists($tmpName)) {
-			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
-			file_put_contents($tmpName, $addressData);
-		} else {
+
+		$tmpName = $tmpDir . sha1($address) . '.txt';
+		if (file_exists($tmpName)) {
 			$addressData = file_get_contents($tmpName);
 		}
 		$adr = json_decode($addressData, TRUE);
+
+		if (!isset($adr['results'][0])) {
+			$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&language=de';
+			$addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
+			file_put_contents($tmpName, $addressData);
+			$adr = json_decode($addressData, TRUE);
+
+			if (isset($adr['error_message'])) {
+				throw new \Exception('API Error: ' . $adr['error_message']);
+			}
+		}
+
 		if (!isset($adr['results'][0])) {
 			return;
 		}
+
 		$rawResult = $adr['results'][0];
 		$result = array();
 

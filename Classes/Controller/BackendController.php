@@ -53,6 +53,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 */
 	public function importAction($storagePid, $categoryUid, $truncate, $file) {
 		$importService = new ImportService();
-		$importService->import($file['tmp_name'], $storagePid, $categoryUid, $truncate);
+		$rows = $importService->import($file['tmp_name'], $storagePid, $categoryUid, $truncate);
+		return 'imported ' . count($rows) . ' locations';
 	}
 }
