@@ -120,7 +120,6 @@
 					<settings.showAtLeast>
 						<TCEforms>
 							<label>Anzahl der Ergebnisse, die auf jeden Fall angezeigt werden sollen (erweitert den Umkreis automatisch)</label>
-							<displayCond><![CDATA[FIELD:switchableControllerActions:=:Location->list;Location->show;Location->ajaxSearch]]></displayCond>
 							<config>
 								<type>input</type>
 							</config>
