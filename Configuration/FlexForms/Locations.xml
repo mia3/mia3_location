@@ -12,7 +12,7 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:mia3_location/Resources/Private/Language/locallang_be.xlf:flexforms_tab.settings</sheetTitle>
+					<sheetTitle>Grundeinstellungen</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
@@ -110,5 +110,49 @@
 				</el>
 			</ROOT>
 		</sDEF>
+		<additional>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>Darstellungsoptionen</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.showAtLeast>
+						<TCEforms>
+							<label>Anzahl der Ergebnisse, die auf jeden Fall angezeigt werden sollen (erweitert den Umkreis automatisch)</label>
+							<displayCond><![CDATA[FIELD:switchableControllerActions:=:Location->list;Location->show;Location->ajaxSearch]]></displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.showAtLeast>
+
+					<settings.template>
+						<TCEforms>
+						<label>Template</label>
+						<config>
+							<type>select</type>
+							<itemsProcFunc>Mia3\Mia3Location\Hooks\ItemsProcFunc->user_templateLayout</itemsProcFunc>
+							<items>
+								<numIndex index="1">
+									<numIndex index="0">Standard</numIndex>
+									<numIndex index="1">Default</numIndex>
+								</numIndex>
+							</items>
+						</config>
+						</TCEforms>
+					</settings.template>
+
+					<settings.showAll>
+						<TCEforms>
+						<label>Alle Einträge anzeigen</label>
+						<config>
+							<type>check</type>
+						</config>
+						</TCEforms>
+					</settings.showAll>
+				</el>
+			</ROOT>
+		</additional>
 	</sheets>
 </T3DataStructure>

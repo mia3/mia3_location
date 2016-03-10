@@ -85,15 +85,23 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		}
 
 		if (empty($address)) {
-			if ($this->settings['showAll'] == 1) {
+			if (boolval($this->settings['showAll'])) {
 				$locations = $this->locationRepository->findAll();
 			}
 		} else if (preg_match('/[0-9]+/', $address) > 0 && class_exists('\Mia3\GeoDb\GeoDb')) {
 			$result = \Mia3\GeoDb\GeoDb::findByPostalCode($address, strtoupper($countryInformation['cn_iso_2']));
+
 			if (is_array($result)) {
 				$latitude = $result['latitude'];
 				$longitude = $result['longitude'];
-				$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
+				$locations = $this->locationRepository->findNearBy(
+					$address,
+					$latitude,
+					$longitude,
+					$radius,
+					explode(',', $this->settings['searchColumns']),
+					$categories
+				);
 				if ($latitude !== NULL) {
 					$this->view->assign('searchLatitude', $latitude);
 					$this->view->assign('searchLongitude', $longitude);
@@ -109,7 +117,14 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				$longitude = $coordinates->lng;
 			}
 
-			$locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius, explode(',', $this->settings['searchColumns']), $categories);
+			$locations = $this->locationRepository->findNearBy(
+				$address,
+				$latitude,
+				$longitude,
+				$radius,
+				explode(',', $this->settings['searchColumns']),
+				$categories
+			);
 			if ($latitude !== NULL) {
 				$this->view->assign('searchLatitude', $latitude);
 				$this->view->assign('searchLongitude', $longitude);
@@ -120,7 +135,6 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$this->groupByCategories($locations);
 		}
 
-		$this->view->assign('locations', $locations);
 		$this->view->assign('radius', $radius);
 
 		$countries = array();
@@ -128,6 +142,14 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$countries[$country->getShortNameEn()] = $country->getNameLocalized();
 		}
 		$this->view->assign('countries', $countries);
+
+		if (isset($this->settings['showAtLeast']) && $this->settings['showAtLeast'] > 0 && $this->settings['showAtLeast'] > count($locations)) {
+            // $additionalLocations = $this->locationRepository->findNearBy($address, $latitude, $longitude, 999);
+            // while (count($locations) < $this->settings['showAtLeast']) {
+            //     $locations[] = array_shift($additionalLocations);
+            // }
+        }
+        $this->view->assign('locations', $locations);
 	}
 
 	/**

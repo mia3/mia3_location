@@ -1,0 +1,161 @@
+<div id="map-canvas" style="height:350px; width: 100%; margin-bottom: 20px;"></div>
+
+<f:form action="list" class="form-inline box black">
+	<div class="content">
+		<f:form.hidden name="country" value="Germany" />
+		<div class="form-group">
+			<f:form.textfield class="form-control" placeholder="Straße, PLZ..." name="address" value="{address}"/>
+		</div>
+		<div class="form-group">
+			<f:form.select name="radius" class="form-control form-compact" options="{5: '5', 10: '10', 20: '20', 30: '30', 50: '50', 100: '100'}" value="{radius}" />
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary">Suchen</button>
+		</div>
+	</div>
+</f:form>
+<f:if condition="{address}">
+	<f:if condition="{locations}">
+		<f:else>
+			<strong>Leider konnten keine Fachhändler anhand Ihrer Suchanfrage gefunden werden.</strong>
+		</f:else>
+	</f:if>
+</f:if>
+<div class="row results">
+	<f:for each="{locations}" as="location">
+		<div class="location col-xs-4" data-latitude="{location.latitude}" data-longitude="{location.longitude}" data-marker="{location.markerImage}">
+			<p>
+				<strong class="title">{location.name}</strong>
+				<f:if condition="{location.description}">
+					<br /><a href="" class="js-action-toggle-details">weitere Informationen &rsaquo;</a>
+				</f:if>
+			</p>
+			<p>
+				<f:if condition="{location.street}">
+					{location.street}<br />
+				</f:if>
+				<f:if condition="{location.zip}">
+					{location.zip}
+				</f:if>
+				<f:if condition="{location.city}">
+					{location.city}
+				</f:if>
+				<!-- <f:if condition="{location.country}">
+					{location.country}
+				</f:if> -->
+			</p>
+			<p>
+				<f:if condition="{location.phone}">
+					<f:translate key="phone" default="Phone" />: {location.phone} <br />
+				</f:if>
+				<f:if condition="{location.fax}">
+					<f:translate key="fax" default="Fax" />: {location.fax}
+				</f:if>
+			</p>
+			<p>
+				<f:if condition="{location.email}">
+					<f:translate key="email" default="E-Mail" />: {location.email}<br />
+				</f:if>
+				<f:if condition="{location.url}">
+					<a href="http://{location.url}" target="_blank">{location.url}</a>
+				</f:if>
+			</p>
+			<f:if condition="{location.description}">
+				{location.description -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}<br />
+			</f:if>
+			<!-- <f:link.action action="show" arguments="{location : location}"></f:link.action> -->
+			<div class="popup" style="display: none;">
+				<h3 class="title">{location.name}</h3>
+				<f:if condition="{location.street}">
+					{location.street}<br />
+				</f:if>
+				<f:if condition="{location.zip}">
+					{location.zip}
+				</f:if>
+				<f:if condition="{location.city}">
+					{location.city}
+				</f:if>
+
+				<a href="http://maps.google.de/maps?q={location.latitude},{location.longitude}" target="_blank">
+					<br />
+					<f:translate key="navigate" default="Route planen" />
+				</a>
+			</div>
+		</div>
+	</f:for>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+<script>
+	var ajaxUri = "{f:uri.action(action: 'ajaxSearch')}";
+	var defaultZoom = {settings.defaultZoom};
+	var homeIcon = '{settings.homeIcon}';
+	var defaultIcon = '{settings.defaultIcon}';
+
+	function initialize() {
+		var map;
+		var defaultLatitude = {defaultLatitude};
+		var defaultLongitude = {defaultLongitude};
+		var searchLatitude = {searchLatitude};
+		var searchLongitude = {searchLongitude};
+		var address = "{address}";
+		var mapOptions = {
+			zoom: defaultZoom,
+			center: new google.maps.LatLng(defaultLatitude, defaultLongitude),
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			styles: [{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"stylers":[{"hue":"#00aaff"},{"saturation":-100},{"gamma":2.15},{"lightness":12}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"visibility":"on"},{"lightness":24}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":57}]}],
+			mapTypeControlOptions: {
+				mapTypeIds: []
+			},
+			streetViewControl: false
+		};
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		if (address != "" && searchLatitude != 0 && searchLongitude != 0) {
+			new google.maps.Marker({
+				position: new google.maps.LatLng(searchLatitude, searchLongitude),
+				map: map,
+				title: address,
+				icon: homeIcon,
+			});
+		}
+
+		var markers = [];
+		var elements = document.querySelectorAll('.results .location');
+		Array.prototype.forEach.call(elements, function(location, i){
+			var latitude = location.getAttribute('data-latitude');
+			var longitude = location.getAttribute('data-longitude');
+			var markerImage = location.getAttribute('data-marker');
+
+			if (!markerImage) {
+				markerImage = defaultIcon;
+			}
+
+			var marker = new google.maps.Marker({
+				position: new google.maps.LatLng(latitude, longitude),
+				map: map,
+				title: location.querySelectorAll('.title').textContent,
+				icon: markerImage
+			});
+
+			var infowindow = new google.maps.InfoWindow({
+				content: location.querySelectorAll('.popup')[0].innerHTML
+			});
+			google.maps.event.addListener(marker, 'click', function() {
+				infowindow.open(map, marker);
+			});
+
+			markers.push(marker);
+		});
+
+		if (markers.length > 0) {
+			var bounds = new google.maps.LatLngBounds();
+			for(i=0;i<markers.length;i++) {
+				bounds.extend(markers[i].getPosition());
+			}
+			map.fitBounds(bounds);
+		}
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>

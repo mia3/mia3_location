@@ -1,9 +1,19 @@
 plugin.tx_mia3location {
 	view {
-		templateRootPath = {$plugin.tx_mia3location.view.templateRootPath}
-		partialRootPath = {$plugin.tx_mia3location.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_mia3location.view.layoutRootPath}
+		templateRootPaths {
+			0 = EXT:mia3_location/Resources/Private/Templates/
+			1 = {$plugin.tx_mia3location.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:mia3_location/Resources/Private/Partials/
+			1 = {$plugin.tx_mia3location.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:mia3_location/Resources/Private/Layouts/
+			1 = {$plugin.tx_mia3location.view.layoutRootPath}
+		}
 	}
+
 	persistence {
 		storagePid = {$plugin.tx_mia3location.persistence.storagePid}
 	}
@@ -13,11 +23,6 @@ plugin.tx_mia3location {
 		defaultCountry = Deutschland
 		defaultMapLatitude = 51.9518727
 		defaultMapLongitude = 8.400445
-
-		listPid =
-		detailPid =
-
-		showAll = 0
 		groupByCategory = 0
 		searchColumns = name
 		resolveCountryByIp = 0
