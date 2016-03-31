@@ -93,7 +93,7 @@ class ImportService {
 				'pid' => $pid
 			);
 			foreach ($allowedColumns as $allowedColumn => $fallbackColumn) {
-				if (isset($row[$allowedColumn])) {
+				if (isset($row[$allowedColumn]) && !empty($row[$allowedColumn])) {
 					$insertData[$allowedColumn] = $row[$allowedColumn];
 				} else if (isset($googleResult[$fallbackColumn])) {
 					$insertData[$allowedColumn] = $googleResult[$fallbackColumn];
