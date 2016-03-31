@@ -147,6 +147,9 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             $additionalLocations = $this->locationRepository->findNearBy($address, $latitude, $longitude, 999);
             while (count($locations) < $this->settings['showAtLeast']) {
             	$location =  array_shift($additionalLocations);
+            	if (!$location instanceof Location) {
+            		break;
+            	}
                 $locations[$location->getUid()] = $location;
             }
         }
