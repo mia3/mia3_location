@@ -4,13 +4,13 @@
 	<div class="content">
 		<f:form.hidden name="country" value="Germany" />
 		<div class="form-group">
-			<f:form.textfield class="form-control" placeholder="Straße, PLZ..." name="address" value="{address}"/>
+			<f:form.textfield class="form-control" placeholder="PLZ od. Ort eingeben" name="address" value="{address}"/>
 		</div>
 		<div class="form-group">
-			<f:form.select name="radius" class="form-control form-compact" options="{5: '5', 10: '10', 20: '20', 30: '30', 50: '50', 100: '100'}" value="{radius}" />
+			<f:form.select name="radius" class="form-control form-compact" options="{5: '5 km', 10: '10 km', 20: '20 km', 30: '30 km', 50: '50 km', 100: '100 km'}" value="{radius}" />
 		</div>
 		<div class="form-group">
-			<button type="submit" class="btn btn-primary">Suchen</button>
+			<button type="submit" class="btn btn-primary">suchen</button>
 		</div>
 	</div>
 </f:form>
