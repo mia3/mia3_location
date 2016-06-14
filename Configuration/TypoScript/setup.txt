@@ -18,11 +18,17 @@ plugin.tx_mia3location {
 		storagePid = {$plugin.tx_mia3location.persistence.storagePid}
 	}
 	settings {
+		# apiKey =
 		defaultRadius = 20
 		defaultZoom = 8
 		defaultCountry = Deutschland
 		defaultMapLatitude = 51.9518727
 		defaultMapLongitude = 8.400445
+
+		# listPid =
+		# detailPid =
+
+		# showAll = 0
 		groupByCategory = 0
 		searchColumns = name
 		resolveCountryByIp = 0

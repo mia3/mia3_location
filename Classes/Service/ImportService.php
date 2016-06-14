@@ -71,9 +71,6 @@ class ImportService {
 			'country'
 		);
 		foreach ($rows as $key => $row) {
-			if ($key > 300) {
-				exit();
-			}
 			$searchParts = array();
 			foreach ($searchColumns as $searchColumn) {
 				if (!isset($row[$searchColumn])) {
