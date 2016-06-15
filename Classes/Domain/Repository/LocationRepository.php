@@ -43,12 +43,12 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
         $query = 'SELECT *, (
         	((acos(
-				sin((' . ($latitude * $pi / 180) . ')) * sin((latitude * ' . $pi . ' / 180))
+				sin((' . number_format($latitude * $pi / 180, 10, '.', '') . ')) * sin((latitude * ' . number_format($pi, 10, '.', '') . ' / 180))
 				+
-				cos((' . ($latitude * $pi / 180) . ')) *  cos((latitude * ' . $pi . ' / 180))
+				cos((' . number_format($latitude * $pi / 180, 10, '.', '') . ')) *  cos((latitude * ' . number_format($pi, 10, '.', '') . ' / 180))
 				*
-				cos(((' . $longitude . ' - longitude) * ' . $pi . ' / 180))
-			)) * 180 / ' . $pi . ') * 60 * 1.423
+				cos(((' . number_format($longitude, 10, '.', '') . ' - longitude) * ' . number_format($pi, 10, '.', '') . ' / 180))
+			)) * 180 / ' . number_format($pi, 10, '.', '') . ') * 60 * 1.423
 		) as distance
 		FROM ' . $this->tableName . '
 		HAVING (' . implode(' OR ', $whereParts) . ')

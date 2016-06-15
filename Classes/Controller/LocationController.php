@@ -103,8 +103,8 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 					$categories
 				);
 				if ($latitude !== NULL) {
-					$this->view->assign('searchLatitude', $latitude);
-					$this->view->assign('searchLongitude', $longitude);
+					$this->view->assign('searchLatitude', number_format($latitude, 10, '.', ''));
+					$this->view->assign('searchLongitude', number_format($longitude, 10, '.', ''));
 				}
 			}
 		} else {
@@ -125,9 +125,10 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				explode(',', $this->settings['searchColumns']),
 				$categories
 			);
+
 			if ($latitude !== NULL) {
-				$this->view->assign('searchLatitude', $latitude);
-				$this->view->assign('searchLongitude', $longitude);
+				$this->view->assign('searchLatitude', number_format($latitude, 10, '.', ''));
+				$this->view->assign('searchLongitude', number_format($longitude, 10, '.', ''));
 			}
 		}
 
