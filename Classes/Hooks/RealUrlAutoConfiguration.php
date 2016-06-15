@@ -14,47 +14,49 @@ namespace Mia3\Mia3Location\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
-class RealUrlAutoConfiguration {
+class RealUrlAutoConfiguration
+{
 
-	/**
-	 * Generates additional RealURL configuration and merges it with provided configuration
-	 *
-	 * @param       array $params Default configuration
-	 * @return      array Updated configuration
-	 */
-	public function addLocationConfig($params) {
-		return array_merge_recursive($params['config'], array(
-				'postVarSets' => array(
-					'_DEFAULT' => array(
-						'location' => array(
-							array(
-								'GETvar' => 'tx_mia3location_locations[controller]',
-								'noMatch' => 'bypass'
-							),
-							array(
-								'GETvar' => 'tx_mia3location_locations[action]',
-								'noMatch' => 'bypass',
-								'valueMap' => array(
-								  'show' => 'show'
-								)
-							),
-							array(
-								'GETvar' => 'tx_mia3location_locations[location]',
-								'lookUpTable' => array(
-									'table' => 'tx_mia3location_domain_model_location',
-									'id_field' => 'uid',
-									'alias_field' => 'name',
-									'useUniqueCache' => 1,
-									'useUniqueCache_conf' => array(
-										'strtolower' => 1,
-										'spaceCharacter' => '-'
-									)
-								)
-							)
-						)
-					)
-				)
-			)
-		);
-	}
+    /**
+     * Generates additional RealURL configuration and merges it with provided configuration
+     *
+     * @param       array $params Default configuration
+     * @return      array Updated configuration
+     */
+    public function addLocationConfig($params)
+    {
+        return array_merge_recursive($params['config'], array(
+                'postVarSets' => array(
+                    '_DEFAULT' => array(
+                        'location' => array(
+                            array(
+                                'GETvar' => 'tx_mia3location_locations[controller]',
+                                'noMatch' => 'bypass',
+                            ),
+                            array(
+                                'GETvar' => 'tx_mia3location_locations[action]',
+                                'noMatch' => 'bypass',
+                                'valueMap' => array(
+                                    'show' => 'show',
+                                ),
+                            ),
+                            array(
+                                'GETvar' => 'tx_mia3location_locations[location]',
+                                'lookUpTable' => array(
+                                    'table' => 'tx_mia3location_domain_model_location',
+                                    'id_field' => 'uid',
+                                    'alias_field' => 'name',
+                                    'useUniqueCache' => 1,
+                                    'useUniqueCache_conf' => array(
+                                        'strtolower' => 1,
+                                        'spaceCharacter' => '-',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+    }
 }

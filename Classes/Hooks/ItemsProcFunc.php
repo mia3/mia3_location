@@ -23,18 +23,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ItemsProcFunc
 {
 
-	/**
-	 * Itemsproc function to extend the selection of templateLayouts in the plugin
-	 *
-	 * @param array &$config configuration array
-	 * @return void
-	 */
-	public function user_templateLayout(array &$config)
-	{
-		$additionalLayouts = $GLOBALS['TYPO3_CONF_VARS']['EXT']['mia3_location']['templateLayouts'];
-		foreach ($additionalLayouts as $additionalLayout) {
-			array_push($config['items'], $additionalLayout);
-		}
-	}
+    /**
+     * Itemsproc function to extend the selection of templateLayouts in the plugin
+     *
+     * @param array &$config configuration array
+     * @return void
+     */
+    public function user_templateLayout(array &$config)
+    {
+        $additionalLayouts = $GLOBALS['TYPO3_CONF_VARS']['EXT']['mia3_location']['templateLayouts'];
+        foreach ($additionalLayouts as $additionalLayout) {
+            array_push($config['items'], $additionalLayout);
+        }
+    }
 
 }

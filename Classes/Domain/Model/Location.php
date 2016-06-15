@@ -2,6 +2,7 @@
 namespace Mia3\Mia3Location\Domain\Model;
 
 use TYPO3\CMS\Extbase\Domain\Model\Category;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,424 +32,487 @@ use TYPO3\CMS\Extbase\Domain\Model\Category;
  *
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
 
-	/**
-	 * description
-	 *
-	 * @var \string
-	 */
-	protected $additional = NULL;
+    /**
+     * description
+     *
+     * @var \string
+     */
+    protected $additional = null;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mia3\Mia3Location\Domain\Model\Category>
-	 * @lazy
-	 */
-	protected $categories = NULL;
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mia3\Mia3Location\Domain\Model\Category>
+     * @lazy
+     */
+    protected $categories = null;
 
-	/**
-	 * name
-	 *
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * name
+     *
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * description
-	 *
-	 * @var string
-	 */
-	protected $description = '';
+    /**
+     * description
+     *
+     * @var string
+     */
+    protected $description = '';
 
-	/**
-	 * description
-	 *
-	 * @var string
-	 */
-	protected $contact = NULL;
+    /**
+     * description
+     *
+     * @var string
+     */
+    protected $contact = null;
 
-	/**
-	 * street
-	 *
-	 * @var string
-	 */
-	protected $street = '';
+    /**
+     * street
+     *
+     * @var string
+     */
+    protected $street = '';
 
-	/**
-	 * zip
-	 *
-	 * @var string
-	 */
-	protected $zip = '';
+    /**
+     * zip
+     *
+     * @var string
+     */
+    protected $zip = '';
 
-	/**
-	 * city
-	 *
-	 * @var string
-	 */
-	protected $city = '';
+    /**
+     * city
+     *
+     * @var string
+     */
+    protected $city = '';
 
-	/**
-	 * country
-	 *
-	 * @var string
-	 */
-	protected $country = NULL;
+    /**
+     * country
+     *
+     * @var string
+     */
+    protected $country = null;
 
-	/**
-	 * phone
-	 *
-	 * @var string
-	 */
-	protected $phone = '';
+    /**
+     * phone
+     *
+     * @var string
+     */
+    protected $phone = '';
 
-	/**
-	 * fax
-	 *
-	 * @var string
-	 */
-	protected $fax = '';
+    /**
+     * fax
+     *
+     * @var string
+     */
+    protected $fax = '';
 
-	/**
-	 * url
-	 *
-	 * @var string
-	 */
-	protected $url = '';
+    /**
+     * url
+     *
+     * @var string
+     */
+    protected $url = '';
 
-	/**
-	 * email
-	 *
-	 * @var string
-	 */
-	protected $email = '';
+    /**
+     * email
+     *
+     * @var string
+     */
+    protected $email = '';
 
-	/**
-	 * latitude
-	 *
-	 * @var string
-	 */
-	protected $latitude = '';
+    /**
+     * latitude
+     *
+     * @var string
+     */
+    protected $latitude = '';
 
-	/**
-	 * longitude
-	 *
-	 * @var string
-	 */
-	protected $longitude = '';
+    /**
+     * longitude
+     *
+     * @var string
+     */
+    protected $longitude = '';
 
-	/**
-	 * Returns the name
-	 *
-	 * @return \string $name
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * images
+     *
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     */
+    protected $images = null;
 
-	/**
-	 * Sets the name
-	 *
-	 * @param \string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+    /**
+     * Returns the name
+     *
+     * @return \string $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param string $additional
-	 */
-	public function setAdditional($additional) {
-		$this->additional = $additional;
-	}
+    /**
+     * Sets the name
+     *
+     * @param \string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getAdditional() {
-		return $this->additional;
-	}
+    /**
+     * @param string $additional
+     */
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+    }
 
-	/**
-	 * Returns the description
-	 *
-	 * @return \string $description
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * @return string
+     */
+    public function getAdditional()
+    {
+        return $this->additional;
+    }
 
-	/**
-	 * Sets the description
-	 *
-	 * @param \string $description
-	 * @return void
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
-	}
+    /**
+     * Returns the description
+     *
+     * @return \string $description
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * Returns the contact
-	 *
-	 * @return \string $contact
-	 */
-	public function getContact() {
-		return $this->contact;
-	}
+    /**
+     * Sets the description
+     *
+     * @param \string $description
+     * @return void
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
 
-	/**
-	 * Sets the contact
-	 *
-	 * @param \string $contact
-	 * @return void
-	 */
-	public function setContact($contact) {
-		$this->contact = $contact;
-	}
+    /**
+     * Returns the contact
+     *
+     * @return \string $contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
 
-	/**
-	 * Returns the street
-	 *
-	 * @return \string $street
-	 */
-	public function getStreet() {
-		return $this->street;
-	}
+    /**
+     * Sets the contact
+     *
+     * @param \string $contact
+     * @return void
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    }
 
-	/**
-	 * Sets the street
-	 *
-	 * @param \string $street
-	 * @return void
-	 */
-	public function setStreet($street) {
-		$this->street = $street;
-	}
+    /**
+     * Returns the street
+     *
+     * @return \string $street
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
 
-	/**
-	 * Returns the zip
-	 *
-	 * @return \string $zip
-	 */
-	public function getZip() {
-		return $this->zip;
-	}
+    /**
+     * Sets the street
+     *
+     * @param \string $street
+     * @return void
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+    }
 
-	/**
-	 * Sets the zip
-	 *
-	 * @param \string $zip
-	 * @return void
-	 */
-	public function setZip($zip) {
-		$this->zip = $zip;
-	}
+    /**
+     * Returns the zip
+     *
+     * @return \string $zip
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
 
-	/**
-	 * Returns the city
-	 *
-	 * @return \string $city
-	 */
-	public function getCity() {
-		return $this->city;
-	}
+    /**
+     * Sets the zip
+     *
+     * @param \string $zip
+     * @return void
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
+    }
 
-	/**
-	 * Sets the city
-	 *
-	 * @param \string $city
-	 * @return void
-	 */
-	public function setCity($city) {
-		$this->city = $city;
-	}
+    /**
+     * Returns the city
+     *
+     * @return \string $city
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
 
-	/**
-	 * Returns the country
-	 *
-	 * @return \string $country
-	 */
-	public function getCountry() {
-		return $this->country;
-	}
+    /**
+     * Sets the city
+     *
+     * @param \string $city
+     * @return void
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
 
-	/**
-	 * Sets the country
-	 *
-	 * @param \string $country
-	 * @return void
-	 */
-	public function setCountry($country) {
-		$this->country = $country;
-	}
+    /**
+     * Returns the country
+     *
+     * @return \string $country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
 
-	/**
-	 * Returns the phone
-	 *
-	 * @return \string $phone
-	 */
-	public function getPhone() {
-		return $this->phone;
-	}
+    /**
+     * Sets the country
+     *
+     * @param \string $country
+     * @return void
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
 
-	/**
-	 * Sets the phone
-	 *
-	 * @param \string $phone
-	 * @return void
-	 */
-	public function setPhone($phone) {
-		$this->phone = $phone;
-	}
+    /**
+     * Returns the phone
+     *
+     * @return \string $phone
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 
-	/**
-	 * Returns the fax
-	 *
-	 * @return \string $fax
-	 */
-	public function getFax() {
-		return $this->fax;
-	}
+    /**
+     * Sets the phone
+     *
+     * @param \string $phone
+     * @return void
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
 
-	/**
-	 * Sets the fax
-	 *
-	 * @param \string $fax
-	 * @return void
-	 */
-	public function setFax($fax) {
-		$this->fax = $fax;
-	}
+    /**
+     * Returns the fax
+     *
+     * @return \string $fax
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
 
-	/**
-	 * Returns the url
-	 *
-	 * @return \string $url
-	 */
-	public function getUrl() {
-		return $this->url;
-	}
+    /**
+     * Sets the fax
+     *
+     * @param \string $fax
+     * @return void
+     */
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
+    }
 
-	/**
-	 * Sets the url
-	 *
-	 * @param \string $url
-	 * @return void
-	 */
-	public function setUrl($url) {
-		$this->url = $url;
-	}
+    /**
+     * Returns the url
+     *
+     * @return \string $url
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 
-	/**
-	 * Returns the email
-	 *
-	 * @return \string $email
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
+    /**
+     * Sets the url
+     *
+     * @param \string $url
+     * @return void
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
 
-	/**
-	 * Sets the email
-	 *
-	 * @param \string $email
-	 * @return void
-	 */
-	public function setEmail($email) {
-		$this->email = $email;
-	}
+    /**
+     * Returns the email
+     *
+     * @return \string $email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	/**
-	 * Returns the latitude
-	 *
-	 * @return \string $latitude
-	 */
-	public function getLatitude() {
-		return $this->latitude;
-	}
+    /**
+     * Sets the email
+     *
+     * @param \string $email
+     * @return void
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-	/**
-	 * Sets the latitude
-	 *
-	 * @param \string $latitude
-	 * @return void
-	 */
-	public function setLatitude($latitude) {
-		$this->latitude = $latitude;
-	}
+    /**
+     * Returns the latitude
+     *
+     * @return \string $latitude
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
 
-	/**
-	 * Returns the longitude
-	 *
-	 * @return \string $longitude
-	 */
-	public function getLongitude() {
-		return $this->longitude;
-	}
+    /**
+     * Sets the latitude
+     *
+     * @param \string $latitude
+     * @return void
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
 
-	/**
-	 * Sets the longitude
-	 *
-	 * @param \string $longitude
-	 * @return void
-	 */
-	public function setLongitude($longitude) {
-		$this->longitude = $longitude;
-	}
+    /**
+     * Returns the longitude
+     *
+     * @return \string $longitude
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
 
-	/**
-	 * Get categories
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mia3\Mia3Location\Domain\Model\Category>
-	 */
-	public function getCategories() {
-		return $this->categories;
-	}
+    /**
+     * Sets the longitude
+     *
+     * @param \string $longitude
+     * @return void
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
 
-	/**
-	 * Get first category
-	 *
-	 * @return Category
-	 */
-	public function getFirstCategory() {
-		$categories = $this->getCategories();
-		if (!is_null($categories)) {
-			$categories->rewind();
-			return $categories->current();
-		} else {
-			return NULL;
-		}
-	}
+    /**
+     * Get categories
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mia3\Mia3Location\Domain\Model\Category>
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 
-	/**
-	 * Set categories
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
-	 * @return void
-	 */
-	public function setCategories($categories) {
-		$this->categories = $categories;
-	}
+    /**
+     * Get first category
+     *
+     * @return Category
+     */
+    public function getFirstCategory()
+    {
+        $categories = $this->getCategories();
+        if (!is_null($categories)) {
+            $categories->rewind();
 
-	/**
-	 * Adds a category to this categories.
-	 *
-	 * @param \Mia3\Mia3Location\Domain\Model\Category $category
-	 * @return void
-	 */
-	public function addCategory(Category $category) {
-		$this->getCategories()->attach($category);
-	}
+            return $categories->current();
+        } else {
+            return null;
+        }
+    }
 
-	public function getMarkerImage() {
-		foreach ($this->categories as $category) {
-			if (!is_object($category->getLocationMarker())) {
-				continue;
-			}
-			return $category->getLocationMarker()->getOriginalResource()->getPublicUrl();
-		}
-	}
+    /**
+     * Set categories
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
+     * @return void
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
 
+    /**
+     * Adds a category to this categories.
+     *
+     * @param \Mia3\Mia3Location\Domain\Model\Category $category
+     * @return void
+     */
+    public function addCategory(Category $category)
+    {
+        $this->getCategories()->attach($category);
+    }
+
+    public function getMarkerImage()
+    {
+        foreach ($this->categories as $category) {
+            if (!is_object($category->getLocationMarker())) {
+                continue;
+            }
+
+            return $category->getLocationMarker()->getOriginalResource()->getPublicUrl();
+        }
+    }
+
+    /**
+     * Returns the images
+     *
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Sets the images
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @return void
+     */
+    public function setImages(\TYPO3\CMS\Extbase\Domain\Model\FileReference $images)
+    {
+        $this->images = $images;
+    }
 }

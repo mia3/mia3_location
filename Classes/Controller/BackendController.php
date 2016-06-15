@@ -34,26 +34,30 @@ use Mia3\Mia3Location\Service\ImportService;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
 
-	/**
-	 * action list
-	 *
-	 * @return void
-	 */
-	public function indexAction() {
+    /**
+     * action list
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
 
-	}
+    }
 
-	/**
-	 * @param integer $storagePid
-	 * @param integer $categoryUid
-	 * @param boolean $truncate
-	 * @param array $file
-	 */
-	public function importAction($storagePid, $categoryUid, $truncate, $file) {
-		$importService = new ImportService();
-		$rows = $importService->import($file['tmp_name'], $storagePid, $categoryUid, $truncate);
-		return 'imported ' . count($rows) . ' locations';
-	}
+    /**
+     * @param integer $storagePid
+     * @param integer $categoryUid
+     * @param boolean $truncate
+     * @param array $file
+     */
+    public function importAction($storagePid, $categoryUid, $truncate, $file)
+    {
+        $importService = new ImportService();
+        $rows = $importService->import($file['tmp_name'], $storagePid, $categoryUid, $truncate);
+
+        return 'imported ' . count($rows) . ' locations';
+    }
 }
