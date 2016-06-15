@@ -43,6 +43,12 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     protected $locationRepository;
 
     /**
+     * @var \Mia3\Mia3Location\Domain\Repository\CategoryRepository
+     * @inject
+     */
+    protected $categoryRepository;
+
+    /**
      * @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository
      * @inject
      */
@@ -54,9 +60,10 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * @param string $address
      * @param integer $radius
      * @param string $country
+     * @param integer $category
      * @return void
      */
-    public function listAction($address = null, $radius = null, $country = null)
+    public function listAction($address = null, $radius = null, $country = null, $category = null)
     {
         if (!isset($this->settings['defaultZoom'])) {
             return '<span class="error">you need to include the mia3_location typoscript template!</span>';
@@ -84,6 +91,10 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             $categories = GeneralUtility::trimExplode(',', $this->settings['categories'], true);
         } else {
             $categories = array();
+        }
+
+        if ($category !== NULL) {
+            $categories = array($category);
         }
 
         if (empty($address)) {
@@ -135,6 +146,10 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
                 }
             }
         }
+
+        $categories = $this->categoryRepository->findByUids(GeneralUtility::trimExplode(',', $this->settings['categories'], true))->toArray();
+        $this->view->assign('categories', $categories);
+        $this->view->assign('category', $category);
 
         if ($this->settings['groupByCategory']) {
             $this->groupByCategories($locations);
@@ -227,6 +242,7 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         } else {
             $categories = array();
         }
+
         $locations = $this->locationRepository->findNearBy($address, $latitude, $longitude, $radius,
             explode(',', $this->settings['searchColumns']), $categories);
 

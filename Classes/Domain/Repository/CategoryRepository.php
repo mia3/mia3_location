@@ -32,5 +32,10 @@ namespace Mia3\Mia3Location\Domain\Repository;
 class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
 
+    public function findByUids($uids) {
+        $query = $this->createQuery();
+        $query->matching($query->in('uid', $uids));
+        return $query->execute();
+    }
 
 }
