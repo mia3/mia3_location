@@ -54,6 +54,9 @@
 			<trans-unit id="tx_mia3location_domain_model_location.categories">
 				<source>Categories</source>
 			</trans-unit>
+			<trans-unit id="tx_mia3location_domain_model_location.images">
+				<source>Images</source>
+			</trans-unit>
 			<trans-unit id="tx_mia3location_domain_model_category.location_marker">
 				<source>Location Marker</source>
 			</trans-unit>

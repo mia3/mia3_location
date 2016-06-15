@@ -22,6 +22,7 @@ CREATE TABLE tx_mia3location_domain_model_location (
 	latitude varchar(255) DEFAULT '' NOT NULL,
 	longitude varchar(255) DEFAULT '' NOT NULL,
 	categories int(11) DEFAULT '0' NOT NULL,
+	images int(11) unsigned NOT NULL default '0',
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
