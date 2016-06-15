@@ -2,6 +2,9 @@
     "name": "mia3/mia3_location",
     "description": "TYPO3 Location Extension",
     "type": "typo3-cms-extension",
+    "requires": {
+        "sjbr/static-info-tables": "*"
+    },
     "suggests": {
         "mia3/geodb": "dev-master"
     },

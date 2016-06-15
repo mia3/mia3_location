@@ -24,7 +24,7 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Locations',
-	'Locations'
+	'MIA3 - Location'
 );
 
 $pluginName = 'mia3location_locations';
@@ -61,6 +61,6 @@ $TCA['tx_mia3location_domain_model_location'] = array(
 		),
 		'searchFields' => 'name,description,street,zip,city,phone,fax,url,email,latitude,longitude,',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Location.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_mia3location_domain_model_location.gif'
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/marker-stroked.png'
 	),
 );
