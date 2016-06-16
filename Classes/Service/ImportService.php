@@ -61,7 +61,6 @@ class ImportService
         if ($imageFolder !== NULL) {
             $imageFolder = trim($imageFolder, '/');
             $imageFiles = $this->getImageFiles($imageFolder);
-            var_dump($imageFiles);
         }
 
         $allowedColumns = array(
@@ -154,7 +153,6 @@ class ImportService
                 }
             }
         }
-        exit();
 
         return $rows;
     }
