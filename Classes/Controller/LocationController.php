@@ -98,8 +98,8 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         }
 
         if (empty($address)) {
-            if (boolval($this->settings['showAll'])) {
-                $locations = $this->locationRepository->findAll();
+            if (boolval($this->settings['showAll']) || $category!== NULL) {
+                $locations = $this->locationRepository->findAll($categories);
             }
         } else {
             if (preg_match('/[0-9]+/', $address) > 0 && class_exists('\Mia3\GeoDb\GeoDb')) {

@@ -1,8 +1,6 @@
 <?php
 namespace Mia3\Mia3Location\Domain\Model;
 
-use TYPO3\CMS\Extbase\Domain\Model\Category;
-
 /***************************************************************
  *  Copyright notice
  *

@@ -101,4 +101,23 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         return $locations;
     }
+
+    public function findAll($categories = array()) {
+        $query = $this->createQuery();
+        if (count($categories) > 0) {
+            $locationsInCategoryQuery = '
+                SELECT uid_foreign
+                FROM sys_category_record_mm
+                WHERE sys_category_record_mm.tablenames = "tx_mia3location_domain_model_location"
+                AND sys_category_record_mm.uid_local IN (' . implode(',', $categories) . ')';
+
+            $result = $GLOBALS['TYPO3_DB']->sql_query($locationsInCategoryQuery);
+            $locationsInCategoryUids = array();
+            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+                $locationsInCategoryUids[] = $row['uid_foreign'];
+            }
+            $query->matching($query->in('uid', $locationsInCategoryUids));
+        };
+        return $query->execute();
+    }
 }
