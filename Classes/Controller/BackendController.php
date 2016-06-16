@@ -1,6 +1,7 @@
 <?php
 namespace Mia3\Mia3Location\Controller;
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Mia3\Mia3Location\Service\ImportService;
 
@@ -44,7 +45,24 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function indexAction()
     {
+        $db = $GLOBALS['TYPO3_DB'];
+        /** @var DatabaseConnection $db */
+        $sysFolders = $db->exec_SELECTgetRows('*', 'pages', 'doktype = 254');
+        $location = $db->exec_SELECTgetSingleRow('*', 'tx_mia3location_domain_model_location', 'deleted=0');
+        $storagePids = array();
+        foreach($sysFolders as $sysFolder) {
+            $storagePids[$sysFolder['uid']] = $sysFolder['title'] . ' (' . $sysFolder['uid'] . ')';
+        }
+        if (is_array($location)) {
+            $this->view->assign('storagePid', $location['pid']);
+        }
+        $this->view->assign('storagePids', $storagePids);
 
+        $categories = array();
+        foreach($db->exec_SELECTgetRows('*', 'sys_category', 'deleted=0', '', 'title') as $category) {
+            $categories[$category['uid']] = $category['title'] . ' (' . $category['uid'] . ')';
+        }
+        $this->view->assign('categories', $categories);
     }
 
     /**
@@ -52,11 +70,12 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @param integer $categoryUid
      * @param boolean $truncate
      * @param array $file
+     * @param string $imageFolder
      */
-    public function importAction($storagePid, $categoryUid, $truncate, $file)
+    public function importAction($storagePid, $categoryUid, $truncate, $file, $imageFolder = null)
     {
         $importService = new ImportService();
-        $rows = $importService->import($file['tmp_name'], $storagePid, $categoryUid, $truncate);
+        $rows = $importService->import($file['tmp_name'], $storagePid, $categoryUid, $truncate, $imageFolder);
 
         return 'imported ' . count($rows) . ' locations';
     }

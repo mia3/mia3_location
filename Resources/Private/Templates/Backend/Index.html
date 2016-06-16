@@ -38,15 +38,31 @@
 		<f:form action="import" enctype="multipart/form-data">
 			<p>
 				<label>Storage PID</label>
-				<f:form.textfield name="storagePid" placeholder="pid of sysfolder/page to save locations" class="form-control"/>
+				<!--<f:form.textfield name="storagePid" placeholder="pid of sysfolder/page to save locations" class="form-control"/>-->
+				<f:form.select name="storagePid" options="{storagePids}" value="{storagePid}" prependOptionLabel="" class="form-control" />
 			</p>
 			<p>
 				<label>Category ID (optional)</label>
-				<f:form.textfield name="categoryUid" placeholder="30" class="form-control"/>
+				<!--<f:form.textfield name="categoryUid" placeholder="30" class="form-control"/>-->
+				<f:form.select name="categoryUid" options="{categories}" prependOptionLabel="" class="form-control" />
 			</p>
 			<p>
 				<label>Remove all Locations from Storage Folder before import</label>
 				<f:form.checkbox name="truncate" value="1" class="checkbox" />
+			</p>
+			<p>
+				<label>Path in the fileadmin that contains images</label>
+				<f:form.textfield name="imageFolder" placeholder="images/locations/" class="form-control"/>
+				<div class="help">
+					In order to import images for Locations the Filenames in that directory need to begin with the "id" specified in the CSV followed by a ".".<br />
+					Anything after that "." can be named as needed. The images will be imported alphabetically.
+					For Example:
+						<ul>
+							<li>1.Musterfirma.jpg</li>
+							<li>1.Musterfirma Bild 2.jpg</li>
+							<li>2.eine andere Firma.jpg</li>
+						</ul>
+				</div>
 			</p>
 			<p>
 				<label>CSV File</label>
@@ -56,8 +72,8 @@
 				<p>
 					<strong>Example CSV</strong>
 				</p>
-				<pre>name; contact; street; zip; city; country; region; phone; fax; url; latitude; longitude
-Musterfirma; Nicole Bumgarner; Landsberger Allee 39; 80455; München; Deutschland; Bayern; 089 88 58 19; 089 88 58 20; nicole@musterfirma.de; 3.1234; 32.434</pre>
+				<pre>id; name; contact; street; zip; city; country; region; phone; fax; url; latitude; longitude
+1; Musterfirma; Nicole Bumgarner; Landsberger Allee 39; 80455; München; Deutschland; Bayern; 089 88 58 19; 089 88 58 20; nicole@musterfirma.de; 3.1234; 32.434</pre>
 				<ul>
 					<li>all fields are optional</li>
 					<li>leave latitude/longitude empty to let the import take care of the geocoding</li>

@@ -142,7 +142,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * images
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
      */
     protected $images = null;
 
@@ -498,20 +498,25 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the images
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $images
      */
     public function getImages()
     {
         return $this->images;
+        $images = array();
+        foreach($this->images as $reference) {
+            $images[] = $reference->getOriginalResource()->getOriginalFile();
+        }
+        return $images;
     }
 
     /**
      * Sets the images
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $images
      * @return void
      */
-    public function setImages(\TYPO3\CMS\Extbase\Domain\Model\FileReference $images)
+    public function setImages(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $images)
     {
         $this->images = $images;
     }

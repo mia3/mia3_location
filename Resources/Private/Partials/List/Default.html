@@ -29,9 +29,6 @@
 		<div class="location col-xs-4" data-latitude="{location.latitude}" data-longitude="{location.longitude}" data-marker="{location.markerImage}">
 			<p>
 				<strong class="title">{location.name}</strong>
-				<f:if condition="{location.description}">
-					<br /><a href="" class="js-action-toggle-details">weitere Informationen &rsaquo;</a>
-				</f:if>
 			</p>
 			<p>
 				<f:if condition="{location.street}">
@@ -83,6 +80,11 @@
 					<br />
 					<f:translate key="navigate" default="Route planen" />
 				</a>
+			</div>
+			<div class="images">
+				<f:for each="{location.images}" as="image">
+					<f:image image="{image}" alt="{location.name}" maxHeight="100" maxWidth="150" />
+				</f:for>
 			</div>
 		</div>
 	</f:for>
