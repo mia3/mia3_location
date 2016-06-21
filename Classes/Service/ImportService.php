@@ -2,10 +2,16 @@
 namespace Mia3\Mia3Location\Service;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -31,6 +37,8 @@ class ImportService
      */
     public function import($file, $pid, $category, $truncate = false, $imageFolder = null)
     {
+        $this->settings = $this->loadTS($pid, 'plugin.tx_mia3location.settings');
+
         ini_set("auto_detect_line_endings", true);
         ini_set('max_execution_time', '360');
         $this->initialize();
@@ -172,7 +180,11 @@ class ImportService
 
         if (!isset($adr['results'][0])) {
             $apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=false&language=de';
-            $addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
+            if (isset($this->settings['apiKey']) && !empty($this->settings['apiKey'])) {
+                $apiURL .= '&key=' . $this->settings['apiKey'];
+            }
+
+            $addressData = GeneralUtility::getUrl($apiURL);
             file_put_contents($tmpName, $addressData);
             $adr = json_decode($addressData, true);
 
@@ -260,5 +272,36 @@ class ImportService
         $this->storageRepositories = $this->storageRepository->findAll();
         $this->resourceFactory = ResourceFactory::getInstance();
         $this->dataHandler = $this->objectManager->get(DataHandler::class);
+    }
+
+    public function loadTS($pageUid, $path = null) {
+        /** @var $template \TYPO3\CMS\Core\TypoScript\TemplateService */
+        $template = GeneralUtility::makeInstance(TemplateService::class);
+        // do not log time-performance information
+        $template->tt_track = 0;
+        // Explicitly trigger processing of extension static files
+        $template->setProcessExtensionStatics(true);
+        $template->init();
+        // Get the root line
+        $rootline = array();
+        if ($pageUid > 0) {
+            /** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
+            $sysPage = GeneralUtility::makeInstance(PageRepository::class);
+            // Get the rootline for the current page
+            $rootline = $sysPage->getRootLine($pageUid, '', true);
+        }
+        // This generates the constants/config + hierarchy info for the template.
+        $template->runThroughTemplates($rootline, 0);
+        $template->generateConfig();
+        $setup = $template->setup;
+
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        $typoscript = $typoScriptService->convertTypoScriptArrayToPlainArray($setup);
+
+        if ($path === NULL) {
+            return $typoscript;
+        }
+
+        return ObjectAccess::getPropertyPath($typoscript, $path);
     }
 }
