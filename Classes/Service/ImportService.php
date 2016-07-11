@@ -47,7 +47,7 @@ class ImportService
             $rows = array();
             $headers = null;
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
-                ;
+
                 if ($headers === null) {
                     $headers = $data;
                     continue;
@@ -84,6 +84,7 @@ class ImportService
             'url' => null,
             'latitude' => 'latitude',
             'longitude' => 'longitude',
+            'external_id' => null
         );
         $searchColumns = array(
             'street',
@@ -98,11 +99,13 @@ class ImportService
                     continue;
                 }
                 $searchParts[$searchColumn] = $row[$searchColumn];
+              }
+//            if (!isset($row['country'])) {
+//                $searchParts[] = $defaultCountry;
+//            }
+            if(!isset($row['id'])) {
+                $row['id'] = md5($row['name'] . $row['street'] .$row['city'] . $row['country']);
             }
-            if (!isset($row['country'])) {
-                $searchParts[] = $defaultCountry;
-            }
-
             $address = implode(',', $searchParts);
             $googleResult = $this->getCoordinates($address);
             echo 'address: ' . $address . '<br />';
@@ -116,6 +119,8 @@ class ImportService
                 } else {
                     if (isset($googleResult[$fallbackColumn])) {
                         $insertData[$allowedColumn] = $googleResult[$fallbackColumn];
+                    } else if($allowedColumn == 'external_id' && isset($row['id'])) {
+                        $insertData[$allowedColumn] = $row['id'];
                     }
                 }
             }

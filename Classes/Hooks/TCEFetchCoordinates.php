@@ -12,6 +12,7 @@ class TCEFetchCoordinates
                 $table,
                 $where
             );
+            if(!is_array($rows)) return;
             $row = current($rows);
             $address = implode(',', array(
                 $row['street'],

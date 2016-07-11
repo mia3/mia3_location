@@ -63,7 +63,9 @@
 			<trans-unit id="tx_mia3location_domain_model_category.tab_name">
 				<source>Location</source>
 			</trans-unit>
-
+            <trans-unit id="x_mia3location_domain_model_location.external_id">
+                <source>Id</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

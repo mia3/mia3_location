@@ -39,9 +39,11 @@
 			<trans-unit id="tx_mia3location_domain_model_location.longitude">
 				<source>longitude</source>
 			</trans-unit>
+			<trans-unit id="x_mia3location_domain_model_location.external_id">
+                <source>Id</source>
+            </trans-unit>
 			<trans-unit id="navigate">
 				<source>Route planen</source>
-				<target>Route planen</target>
 			</trans-unit>
 			<trans-unit id="in-storage">
                 <source>im Lager</source>

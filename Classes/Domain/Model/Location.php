@@ -4,7 +4,7 @@ namespace Mia3\Mia3Location\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Mia3 OHG
+ *  (c) 2013 Marc Neuhaus <apocalip@gmail.com>, Mia3 GmbH & Co. KG
  *
  *  All rights reserved
  *
@@ -143,6 +143,12 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
      */
     protected $images = null;
+
+    /**
+     * @var string
+     */
+    protected  $externalId;
+
 
     /**
      * Returns the name
@@ -518,4 +524,22 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->images = $images;
     }
+
+    /**
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
+    }
+
+    /**
+     * @param string $externalId
+     */
+    public function setExternalId($externalId)
+    {
+        $this->externalId = $externalId;
+    }
+
+
 }
