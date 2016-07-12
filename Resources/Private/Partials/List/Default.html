@@ -9,9 +9,11 @@
 		<div class="form-group">
 			<f:form.select name="radius" class="form-control form-compact" options="{5: '5 km', 10: '10 km', 20: '20 km', 30: '30 km', 50: '50 km', 100: '100 km'}" value="{radius}" />
 		</div>
+		<f:if condition="{categories}">
 		<div class="form-group">
 			<f:form.select name="category" class="form-control form-compact" options="{categories}" value="{category}" prependOptionLabel="Alle" />
 		</div>
+		</f:if>
 		<div class="form-group">
 			<button type="submit" class="btn btn-primary">suchen</button>
 		</div>

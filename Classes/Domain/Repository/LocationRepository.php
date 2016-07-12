@@ -69,8 +69,8 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		' . $GLOBALS['TSFE']->sys_page->enableFields($this->tableName) . '
 		ORDER BY distance ASC';
         $result = $GLOBALS['TYPO3_DB']->sql_query($query);
-//         echo $query;
-//         exit();
+        // echo $query;
+        // exit();
 
         $locations = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
@@ -113,7 +113,7 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 FROM sys_category_record_mm
                 WHERE sys_category_record_mm.tablenames = "tx_mia3location_domain_model_location"
                 AND sys_category_record_mm.uid_local IN (' . implode(',', $categories) . ')
-                
+
                 ';
 
             $result = $GLOBALS['TYPO3_DB']->sql_query($locationsInCategoryQuery);

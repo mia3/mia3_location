@@ -147,8 +147,10 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             }
         }
 
-        $categories = $this->categoryRepository->findByUids(GeneralUtility::trimExplode(',', $this->settings['categories'], true))->toArray();
-        $this->view->assign('categories', $categories);
+        if (!empty($this->settings['categories'])) {
+            $categories = $this->categoryRepository->findByUids(GeneralUtility::trimExplode(',', $this->settings['categories'], true))->toArray();
+            $this->view->assign('categories', $categories);
+        }
         $this->view->assign('category', $category);
 
         if ($this->settings['groupByCategory']) {
