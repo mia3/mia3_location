@@ -20,6 +20,14 @@ class TCEFetchCoordinates
                 $row['city'],
                 'Deutschland',
             ));
+            // if there is a longitude and latitude present
+            // do not update these fields and just return
+            if(
+               (isset($row['longitude']) && !empty($row['longitude']) )
+               && (isset($row['latitude']) && !empty($row['latitude']))) {
+               return;
+           }
+
             $apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=false&language=de';
             $addressData = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($apiURL);
             $adr = json_decode($addressData);
