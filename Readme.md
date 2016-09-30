@@ -35,7 +35,7 @@ plugin.tx_mia3location {
 ```
 
 Change the templates using TypoScript constants
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------------------
 You can use the following TypoScript in the  **constants** to change
 the paths
 
