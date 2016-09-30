@@ -7,10 +7,10 @@ Location search using GoogleMaps
 Changing paths of the template
 ------------------------------
 You should never edit the original templates of an extension as those changes will vanish if you upgrade the extension.
-As any extbase based extension, you can find the templates in the directory ```Resources/Private/``.
+As any extbase based extension, you can find the templates in the directory ```Resources/Private/```.
 
 If you want to change a template, copy the desired files to the directory where you store the templates.
-This can be a directory in ```fileadmin`` or a custom extension. Multiple fallbacks can be defined which makes it far easier to customize the templates.
+This can be a directory in ```fileadmin``` or a custom extension. Multiple fallbacks can be defined which makes it far easier to customize the templates.
 
 ```
 plugin.tx_mia3location {
