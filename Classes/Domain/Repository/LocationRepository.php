@@ -40,7 +40,6 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 				FROM sys_category_record_mm
 				WHERE sys_category_record_mm.tablenames = "tx_mia3location_domain_model_location"
 				AND sys_category_record_mm.uid_local IN (' . implode(',', $categories) . ')
-				GROUP BY external_id
 				';
 
             $result = $GLOBALS['TYPO3_DB']->sql_query($locationsInCategoryQuery);
