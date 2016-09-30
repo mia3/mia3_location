@@ -13,7 +13,7 @@ If you want to change a template, copy the desired files to the directory where 
 This can be a directory in ```fileadmin`` or a custom extension. Multiple fallbacks can be defined which makes it far easier to customize the templates.
 
 ```
-plugin.tx_news {
+plugin.tx_mia3location {
     view {
         templateRootPaths >
         templateRootPaths {
@@ -48,3 +48,9 @@ plugin.tx_mia3location {
    }
 }
 ```
+
+Creating a new Release/Tag
+--------------------------
+
+1. install [deployer](http://deployer.org/)
+2. create release by using ```dep release:patch```, ```dep release:minor``` or ```dep release:major```
