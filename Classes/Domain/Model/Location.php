@@ -149,6 +149,10 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected  $externalId;
 
+    /**
+     * @var int
+     */
+    protected $sorting;
 
     /**
      * Returns the name
@@ -541,5 +545,20 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->externalId = $externalId;
     }
 
+    /**
+     * @return int
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
+    }
+
+    /**
+     * @param int $sorting
+     */
+    public function setSorting($sorting)
+    {
+        $this->sorting = $sorting;
+    }
 
 }

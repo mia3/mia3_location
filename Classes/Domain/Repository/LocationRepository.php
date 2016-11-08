@@ -1,5 +1,7 @@
 <?php
 namespace Mia3\Mia3Location\Domain\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  *
@@ -10,6 +12,11 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var string
      */
     protected $tableName = 'tx_mia3location_domain_model_location';
+
+    /**
+     * @var array
+     */
+    protected $defaultOrderings = array ('sorting' => QueryInterface::ORDER_ASCENDING);
 
     public function findNearBy(
         $search,
@@ -111,9 +118,7 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 SELECT uid_foreign
                 FROM sys_category_record_mm
                 WHERE sys_category_record_mm.tablenames = "tx_mia3location_domain_model_location"
-                AND sys_category_record_mm.uid_local IN (' . implode(',', $categories) . ')
-
-                ';
+                AND sys_category_record_mm.uid_local IN (' . implode(',', $categories) . ')';
 
             $result = $GLOBALS['TYPO3_DB']->sql_query($locationsInCategoryQuery);
             $locationsInCategoryUids = array();
@@ -122,6 +127,7 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
             $query->matching($query->in('uid', $locationsInCategoryUids));
         };
-        return $query->execute();
+
+        return $query->execute(true);
     }
 }
