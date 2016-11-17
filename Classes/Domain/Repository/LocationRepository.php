@@ -70,7 +70,7 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 			)) * 180 / ' . number_format($pi, 10, '.', '') . ') * 60 * 1.423
 		) as distance
 		FROM ' . $this->tableName . '
-		GROUP BY '. $this->tableName. '.external_id HAVING (' . implode(' OR ', $whereParts) . ')
+		HAVING (' . implode(' OR ', $whereParts) . ')
 			   AND (' . implode(' AND ', $additionalWhere) . ')
 		' . $GLOBALS['TSFE']->sys_page->enableFields($this->tableName) . '
 		ORDER BY distance ASC';
@@ -80,7 +80,7 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $locations = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-            $locations[$row['uid']] = $this->findByUid($row['uid']);
+            $locations[$row['external_id']] = $this->findByUid($row['uid']);
         }
 
         return $locations;
