@@ -56,9 +56,9 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
             $additionalWhere[] = 'uid in (' . implode(',', $locationsInCategoryUids) . ')';
         }
-        if($GLOBALS['TSFE']->sys_language_uid > -1) {
-            $additionalWhere[] = 'sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
-        }
+
+        $additionalWhere[] = 'sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid . 'OR sys_language_uid=-1';
+
 
         $query = 'SELECT *, (
         	((acos(
