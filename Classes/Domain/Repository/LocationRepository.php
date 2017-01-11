@@ -57,6 +57,9 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $additionalWhere[] = 'uid in (' . implode(',', $locationsInCategoryUids) . ')';
         }
 
+        $additionalWhere[] = '(sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid . ' OR sys_language_uid=-1)';
+
+
         $query = 'SELECT *, (
         	((acos(
 				sin((' . number_format($latitude * $pi / 180, 10, '.',
