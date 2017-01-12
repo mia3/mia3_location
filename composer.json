@@ -2,7 +2,7 @@
     "name": "mia3/mia3_location",
     "description": "TYPO3 Location Extension",
     "type": "typo3-cms-extension",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "requires": {
         "sjbr/static-info-tables": "*"
     },
