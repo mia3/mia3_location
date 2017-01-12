@@ -172,7 +172,16 @@ class LocationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
                 if (!$location instanceof \Mia3\Mia3Location\Domain\Model\Location) {
                     break;
                 }
-                $locations[$location->getUid()] = $location;
+                $locationIsAlreadyPresent = false;
+                // check if the location which should be added is already preset in the array
+                // foreach loop was used because of the nesting levels for an in_array approach
+                foreach($locations as $alreadyFoundLocation) {
+                    $locationIsAlreadyPresent = $locationIsAlreadyPresent || ($location->getUid() == $alreadyFoundLocation->getUid());
+                }
+                // do not add the same location twice
+                if(!$locationIsAlreadyPresent) {
+                    $locations[$location->getUid()] = $location;
+                }
             }
         }
         $this->view->assign('locations', $locations);
