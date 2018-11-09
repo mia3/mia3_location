@@ -135,6 +135,11 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $query->matching($query->in('uid', $locationsInCategoryUids));
         };
 
-        return $query->execute(true);
+        $locations = array();
+        foreach ($query->execute(true) as $row) {
+            $locations[$row['uid']] = $this->findByUid($row['uid']);
+        }
+
+        return $locations;
     }
 }
